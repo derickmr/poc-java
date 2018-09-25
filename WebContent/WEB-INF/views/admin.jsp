@@ -15,10 +15,12 @@
 		<c:if test="${pageContext.request.userPrincipal.name != null}">
 			<h2>Welcome : ${pageContext.request.userPrincipal.name} | 
 				<a href="<c:url value="/logout" />" > Logout</a></h2>
-			<div>
+
 			Would you like to <a href="<c:url value='/newUser' />">Add Some Users</a> to keep yourself busy?
-			</div>
-	</c:if>				
+			You also can <a href="<c:url value="/showAll" />">See all your users</a>
+			Or you can <a href="<c:url value="deleteUser" />">delete</a> or <a href="<c:url value="updateUser" />">update</a> an user
 	</div>
+	</c:if>				
+
 </body>
 </html>

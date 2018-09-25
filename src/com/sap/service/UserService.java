@@ -8,9 +8,15 @@ public interface UserService {
 
     void save(User user);
 
-    User getUserByID(String id);
+    void saveAdmin (User user);
 
-    User deleteUserByID(String id);
+    void saveUser (User user);
+
+    User getUserByID(Integer id);
+
+    User getUserBySsoId (String ssoId);
+
+    User deleteUserByID(Integer id);
 
     void updateUser(User user);
 

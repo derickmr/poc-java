@@ -23,4 +23,9 @@ public class TeamServiceImp implements TeamService {
     public Team getTeamByID(Integer id) {
         return teamDao.getTeamByID(id);
     }
+
+    @Override
+    public Team getTeamByName (String name){
+        return teamDao.getTeamByName(name);
+    }
 }

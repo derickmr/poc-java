@@ -13,10 +13,42 @@
     <title>User registration</title>
 </head>
 <body>
+<div class="form-container">
 
-<form:input type="text" path="userId" id="userId" class="form-control input-sm"/>
-<form:input type="text" path="userPassword" id="userPassword" class="form-control input-sm"/>
-<input type="submit" value="Register" class="btn btn-primary btn-sm"> or <a href="<c:url value='/admin' />">Cancel</a>
+    <h1>New User Registration Form</h1>
 
+    <form:form method="POST" modelAttribute="user" class="form-horizontal">
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="ssoId">SSO ID</label>
+                <div class="col-md-7">
+                    <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm"/>
+                    <div class="has-error">
+                        <form:errors path="ssoId" class="help-inline"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="password">Password</label>
+                <div class="col-md-7">
+                    <form:input type="password" path="password" id="password" class="form-control input-sm"/>
+                    <div class="has-error">
+                        <form:errors path="password" class="help-inline"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-actions floatRight">
+                <input type="submit" value="Register" class="btn btn-primary btn-sm"> or <a href="<c:url value='/admin' />">Cancel</a>
+            </div>
+        </div>
+    </form:form>
+</div>
 </body>
 </html>

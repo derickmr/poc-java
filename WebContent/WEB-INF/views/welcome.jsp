@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%--
   Created by IntelliJ IDEA.
   User: I500782
@@ -13,8 +14,13 @@
 <body>
 
     <div class="success">
-        Greeting : ${greeting}
         This is a welcome page.
+    </div>
+
+    <div>
+        Go to <a href="<c:url value='/login' />">Login page</a>
+        <br/>
+        New Team Owner? <a href="<c:url value='/newAdmin' />">Register!</a>
     </div>
 
 </body>
