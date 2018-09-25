@@ -15,10 +15,8 @@
 
 <div class="success">
     Confirmation message : ${success}
-    <br>
-    Would you like to <a href="<c:url value='/newUser' />">Add More Users</a>?
     <br/>
-    Go to <a href="<c:url value='/admin' />">Admin Page</a> OR <a href="<c:url value="/logout" />">Logout</a>
+    Go to <a href="<c:url value="/login" />">Login</a> or <a href="<c:url value="/admin"/> ">Admin page</a>
 </div>
 
 

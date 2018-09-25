@@ -19,5 +19,7 @@
     </c:forEach>
 </select>
 
+<a href="<c:url value='/admin' />">Go back</a>
+
 </body>
 </html>

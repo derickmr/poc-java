@@ -1,6 +1,8 @@
 package com.sap.service.impl;
 
+import com.sap.dao.TeamDao;
 import com.sap.dao.UserDao;
+import com.sap.model.Team;
 import com.sap.model.User;
 import com.sap.model.UserType;
 import com.sap.service.UserService;
@@ -20,6 +22,9 @@ public class UserServiceImp implements UserService {
     @Resource
     UserDao userDao;
 
+    @Resource
+    TeamDao teamDao;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -31,13 +36,34 @@ public class UserServiceImp implements UserService {
         userDao.save(user);
     }
 
+    @Override
     public void saveAdmin (User user){
+
+        Team team = new Team();
+
+        team.setName("Initial name");
+
+        teamDao.save(team);
+
+        user.setTeam(team);
 
         user.setUserType(UserType.ADMIN.getUserType());
         save(user);
 
     }
 
+    @Override
+    public void saveUserAtOwnerTeam(User user, String ownerSsoId) {
+
+        User userAdmin = userDao.getUserBySsoId(ownerSsoId);
+
+        user.setTeam(userAdmin.getTeam());
+
+        saveUser(user);
+
+    }
+
+    @Override
     public void saveUser (User user){
 
         user.setUserType(UserType.USER.getUserType());
@@ -58,6 +84,25 @@ public class UserServiceImp implements UserService {
     @Override
     public User deleteUserByID(Integer id) {
         return userDao.deleteUserByID(id);
+    }
+
+    @Override
+    public void deleteUserBySsoId (String ssoId){
+
+        User userToBeDeleted = getUserBySsoId(ssoId);
+
+        Team team = userToBeDeleted.getTeam();
+
+        List<User> users = team.getUsers();
+
+        users.remove(userToBeDeleted);
+
+        team.setUsers(users);
+
+        teamDao.save(team);
+
+        deleteUserByID(userToBeDeleted.getId());
+
     }
 
     @Override
