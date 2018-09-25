@@ -1,5 +1,6 @@
 package com.sap.service;
 
+import com.sap.model.Team;
 import com.sap.model.User;
 
 import java.util.List;
@@ -18,7 +19,11 @@ public interface UserService {
 
     User deleteUserByID(Integer id);
 
+    void deleteUserBySsoId (String ssoId);
+
     void updateUser(User user);
+
+    void saveUserAtOwnerTeam (User user, String ownerSsoId);
 
     List<User> getAllUsers();
 

@@ -77,27 +77,17 @@ public class MainController {
     }
 
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)
-    public String saveRegistration (@Valid User user, BindingResult result, ModelMap model){
-
-       /* if (result.hasErrors()){
-            System.out.println("There are errors");
-            return "newuser";
-        }
-        */
+    public String saveRegistration (@Valid User user, ModelMap model){
 
         String ssoId = getPrincipal();
 
-        User userAdmin = userService.getUserBySsoId(ssoId);
 
-        user.setTeam(userAdmin.getTeam());
-
-        userService.saveUser(user);
 
         System.out.println("User id: " + user.getId());
         System.out.println("User password: " + user.getPassword());
         System.out.println("User type: " + user.getUserType());
 
-        model.addAttribute("success", "User " + user.getId() + " has been registered successfully");
+        model.addAttribute("success", "User has been registered successfully");
         return "registrationSuccess";
     }
 
@@ -108,9 +98,9 @@ public class MainController {
         User user = new User();
         model.addAttribute("user", user);
 
-
-        String ssoIdAdmin = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoIdAdmin);
+        //code below will be at service layer
+        String teamOwnerSsoId = getPrincipal();
+        User userAdmin = userService.getUserBySsoId(teamOwnerSsoId);
         List<User> users = userAdmin.getTeam().getUsers();
         users.remove(userAdmin);
 
@@ -123,35 +113,7 @@ public class MainController {
     @RequestMapping(value = "/deleteUserBySsoId", method = RequestMethod.POST)
     public String applyDeleteUser (User user, ModelMap model){
 
-       /* String ssoId = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoId);
-
-        User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
-        Integer teamId = userAdmin.getTeam().getId();
-
-        if (teamId == userToBeDeleted.getTeam().getId()){
-
-            userService.deleteUserByID(userToBeDeleted.getId());
-
-        }
-
-        */
-
-       //code below should be at UserService
-
-       User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
-
-       Team team = userToBeDeleted.getTeam();
-
-       List<User> users = team.getUsers();
-
-       users.remove(userToBeDeleted);
-
-       team.setUsers(users);
-
-       teamService.save(team);
-
-       userService.deleteUserByID(userToBeDeleted.getId());
+       userService.deleteUserBySsoId(user.getSsoId());
 
         return "admin";
     }
@@ -204,32 +166,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/newAdmin", method = RequestMethod.POST)
-    public String saveAdminRegistration (@Valid User user, BindingResult result, ModelMap model){
+    public String saveAdminRegistration (@Valid User user, ModelMap model){
 
-
-        /*
-        if (result.hasErrors()){
-            System.out.println("There are errors");
-            return "newadmin";
-        }
-
-        */
-
-        Team team = new Team();
-
-        team.setName("Initial name");
-
-        teamService.save(team);
-
-        user.setTeam(team);
 
         userService.saveAdmin(user);
 
-        System.out.println("User id: " + user.getId());
-        System.out.println("User password: " + user.getPassword());
-        System.out.println("User type: " + user.getUserType());
-
-        model.addAttribute("success", "User " + user.getId() + " has been registered successfully");
+        model.addAttribute("success", "Admin has been registered successfully");
         return "registrationSuccess";
     }
 
@@ -269,10 +211,14 @@ public class MainController {
     @RequestMapping(value = "/showAll")
     public String showAll (ModelMap model){
 
+        //code below will be at service layer
+
         String ssoId = getPrincipal();
         User userAdmin = userService.getUserBySsoId(ssoId);
 
         List<User> users = userAdmin.getTeam().getUsers();
+
+        users.remove(userAdmin);
 
         model.addAttribute("users", users);
 
