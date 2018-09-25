@@ -12,6 +12,7 @@
             /WEB-INF/datasource-config.xml
             /WEB-INF/*-servlet.xml
             /WEB-INF/applicationContext.xml
+            /WEB-INF/spring-security.xml
 
 
         </param-value>

@@ -8,4 +8,6 @@ public interface TeamService {
 
     Team getTeamByID(Integer id);
 
+    Team getTeamByName (String name);
+
 }

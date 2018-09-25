@@ -3,10 +3,8 @@ package com.sap.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,11 +12,16 @@ import java.util.Objects;
 public class Team {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotEmpty
-    @Column(name = "team_name")
+    @Column(name = "team_name", unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "team", targetEntity = User.class, fetch = FetchType.EAGER)
+    private List<User> users;
+
 
     public Integer getId() {
         return id;
@@ -34,6 +37,15 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override

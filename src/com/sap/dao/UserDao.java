@@ -8,9 +8,11 @@ public interface UserDao {
 
     void save(User user);
 
-    User getUserByID(String id);
+    User getUserByID(Integer id);
 
-    User deleteUserByID(String id);
+    User getUserBySsoId (String ssoId);
+
+    User deleteUserByID(Integer id);
 
     void updateUser(User user);
 

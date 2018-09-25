@@ -2,10 +2,7 @@ package com.sap.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -13,29 +10,48 @@ import java.util.Objects;
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @NotEmpty
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @NotEmpty
-    @Column(name = "userType", nullable = false, unique = true)
-    private String type = UserType.USER.getUserType();
+    @Column(name = "USER_TYPE", nullable = false)
+    private String userType;
 
-    public String getType() {
-        return type;
+    @NotEmpty
+    @Column(name="SSO_ID", unique=true, nullable=false)
+    private String ssoId;
+
+    public String getUserType() {
+        return userType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
-    public String getId() {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+
+    public String getSsoId() {
+        return ssoId;
+    }
+
+    public void setSsoId(String ssoId) {
+        this.ssoId = ssoId;
+    }
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -60,12 +76,18 @@ public class User {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                '}';
+
+
+    public Team getTeam() {
+        return team;
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    @Override
+    public String toString() {
+        return "" + ssoId;
+    }
 }

@@ -8,4 +8,6 @@ public interface TeamDao {
 
     Team getTeamByID(Integer id);
 
+    Team getTeamByName (String name);
+
 }
