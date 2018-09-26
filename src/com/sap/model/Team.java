@@ -22,6 +22,16 @@ public class Team {
     @OneToMany(mappedBy = "team", targetEntity = User.class, fetch = FetchType.EAGER)
     private List<User> users;
 
+    @OneToOne
+    private User teamOwner;
+
+    public User getTeamOwner() {
+        return teamOwner;
+    }
+
+    public void setTeamOwner(User teamOwner) {
+        this.teamOwner = teamOwner;
+    }
 
     public Integer getId() {
         return id;
