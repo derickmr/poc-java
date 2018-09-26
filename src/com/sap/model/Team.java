@@ -23,6 +23,7 @@ public class Team {
     private List<User> users;
 
     @OneToOne
+	@Column(name = "team_owner", unique = true)
     private User teamOwner;
 
     public User getTeamOwner() {
