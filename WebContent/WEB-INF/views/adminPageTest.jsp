@@ -65,34 +65,34 @@
             <td colspan="2">
                 <c:if test="${!empty user.ssoId}">
                     <input type="submit"
-                           value="<spring:message text="Edit Person"/>" />
+                           value="<spring:message text="Edit User"/>" />
                 </c:if>
                 <c:if test="${empty user.ssoId}">
                     <input type="submit"
-                           value="<spring:message text="Add Person"/>" />
+                           value="<spring:message text="Add User"/>" />
                 </c:if>
             </td>
         </tr>
     </table>
 </form:form>
 <br>
-<h3>Persons List</h3>
+<h3>Users list</h3>
 <c:if test="${!empty users}">
     <table class="tg">
         <tr>
-            <th width="80">Person ID</th>
-            <th width="120">Person Name</th>
-            <th width="120">Person Country</th>
+            <th width="80">User ID</th>
+            <th width="120">User SSO ID</th>
+            <th width="120">User Encrypted Password</th>
             <th width="60">Edit</th>
             <th width="60">Delete</th>
         </tr>
-        <c:forEach items="${users}" var="person">
+        <c:forEach items="${users}" var="user">
             <tr>
-                <td>${person.id}</td>
-                <td>${person.ssoId}</td>
-                <td>${person.password}</td>
-                <td><a href="<c:url value='/edit/${person.id}' />" >Edit</a></td>
-                <td><a href="<c:url value='/remove/${person.id}' />" >Delete</a></td>
+                <td>${user.id}</td>
+                <td>${user.ssoId}</td>
+                <td>${user.password}</td>
+                <td><a href="<c:url value='/edit/${user.id}' />" >Edit</a></td>
+                <td><a href="<c:url value='/remove/${user.id}' />" >Delete</a></td>
             </tr>
         </c:forEach>
     </table>
