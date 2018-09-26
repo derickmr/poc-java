@@ -41,7 +41,13 @@ public class UserServiceImp implements UserService {
     @Override
     public void saveAdmin (User user){
 
+        Team team = new Team();
 
+        team.setName("Initial name");
+
+        teamDao.save(team);
+
+        user.setTeam(team);
 
         user.setUserType(UserType.ADMIN.getUserType());
         save(user);
@@ -49,13 +55,31 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void saveUserAtOwnerTeam(User user, String ownerSsoId) {
+    public void saveUserAtOwnerTeam(User user, User admin) {
 
-        User userAdmin = userDao.getUserBySsoId(ownerSsoId);
-
-        user.setTeam(userAdmin.getTeam());
+        user.setTeam(admin.getTeam());
 
         saveUser(user);
+
+    }
+
+    @Override
+    public boolean verifyIfActionCanBeAppliedToUser(User user) {
+
+        User currentUser = getCurrentUser();
+
+        if ((!currentUser.equals(user.getTeam().getTeamOwner())) || (!currentUser.equals(user)))
+              return false;
+
+        return true;
+    }
+
+    @Override
+    public User getCurrentUser() {
+
+        String userSso = getPrincipal();
+
+        return getUserBySsoId(userSso);
 
     }
 
@@ -116,7 +140,18 @@ public class UserServiceImp implements UserService {
         return users;
     }
 
-    //Method that gets the current logged user
+    @Override
+    public List<User> getTeamMates(User user) {
+
+        List<User> users = user.getTeam().getUsers();
+        users.remove(user);
+
+        return users;
+
+    }
+
+    //Method that gets the current logged ssoId
+
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

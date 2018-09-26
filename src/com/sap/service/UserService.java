@@ -23,8 +23,14 @@ public interface UserService {
 
     void updateUser(User user);
 
-    void saveUserAtOwnerTeam (User user, String ownerSsoId);
+    void saveUserAtOwnerTeam (User user, User admin);
 
     List<User> getAllUsers();
+
+    List<User> getTeamMates (User user);
+
+    User getCurrentUser ();
+
+    boolean verifyIfActionCanBeAppliedToUser (User user);
 
 }
