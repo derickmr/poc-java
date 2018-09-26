@@ -77,11 +77,21 @@ public class MainController {
     }
 
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)
-    public String saveRegistration (@Valid User user, ModelMap model){
+    public String saveRegistration (@Valid User user, BindingResult result, ModelMap model){
+
+       /* if (result.hasErrors()){
+            System.out.println("There are errors");
+            return "newuser";
+        }
+        */
 
         String ssoId = getPrincipal();
 
+        User userAdmin = userService.getUserBySsoId(ssoId);
 
+        user.setTeam(userAdmin.getTeam());
+
+        userService.saveUser(user);
 
         System.out.println("User id: " + user.getId());
         System.out.println("User password: " + user.getPassword());
@@ -98,9 +108,9 @@ public class MainController {
         User user = new User();
         model.addAttribute("user", user);
 
-        //code below will be at service layer
-        String teamOwnerSsoId = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(teamOwnerSsoId);
+
+        String ssoIdAdmin = getPrincipal();
+        User userAdmin = userService.getUserBySsoId(ssoIdAdmin);
         List<User> users = userAdmin.getTeam().getUsers();
         users.remove(userAdmin);
 
@@ -113,7 +123,30 @@ public class MainController {
     @RequestMapping(value = "/deleteUserBySsoId", method = RequestMethod.POST)
     public String applyDeleteUser (User user, ModelMap model){
 
-       userService.deleteUserBySsoId(user.getSsoId());
+       /* String ssoId = getPrincipal();
+        User userAdmin = userService.getUserBySsoId(ssoId);
+        User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
+        Integer teamId = userAdmin.getTeam().getId();
+        if (teamId == userToBeDeleted.getTeam().getId()){
+            userService.deleteUserByID(userToBeDeleted.getId());
+        }
+        */
+
+        //code below should be at UserService
+
+        User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
+
+        Team team = userToBeDeleted.getTeam();
+
+        List<User> users = team.getUsers();
+
+        users.remove(userToBeDeleted);
+
+        team.setUsers(users);
+
+        teamService.save(team);
+
+        userService.deleteUserByID(userToBeDeleted.getId());
 
         return "admin";
     }
@@ -121,7 +154,7 @@ public class MainController {
     @RequestMapping(value = "/updateUser", method = RequestMethod.GET)
     public String updateUser (ModelMap model){
 
-        User userToBeModified = new User();
+      /*  User userToBeModified = new User();
         User userWithChanges = new User();
 
         String ssoIdAdmin = getPrincipal();
@@ -134,12 +167,13 @@ public class MainController {
         model.addAttribute("userToBeModified", userToBeModified);
         model.addAttribute("userWithChanges", userWithChanges);
 
+        */
 
-        return "updateuser";
+        return "newuser";
     }
 
     @RequestMapping(value = "/updateSelectedUser", method = RequestMethod.POST)
-    public String updateUser (User user, ModelMap model){
+    public String updateUser (User userToBeModified, User userWithChanges, ModelMap model){
 
 
 
@@ -165,15 +199,34 @@ public class MainController {
         return "newadmin";
     }
 
+    //ok
     @RequestMapping(value = "/newAdmin", method = RequestMethod.POST)
-    public String saveAdminRegistration (@Valid User user, ModelMap model){
+    public String saveAdminRegistration (User user, ModelMap model){
 
 
         userService.saveAdmin(user);
 
+
         model.addAttribute("success", "Admin has been registered successfully");
         return "registrationSuccess";
     }
+
+
+    //ok
+    @RequestMapping(value = "/showAll")
+    public String showAll (ModelMap model){
+
+        String ssoId = userService.getPrincipal();
+
+        User userAdmin = userService.getUserBySsoId(ssoId);
+
+        List<User> users = userService.getTeamMates(userAdmin);
+
+        model.addAttribute("users", users);
+
+        return "showAll";
+    }
+
 
     @RequestMapping(value = "/mock")
     public void mockUsers (){
@@ -207,36 +260,5 @@ public class MainController {
 
 
     }
-
-    @RequestMapping(value = "/showAll")
-    public String showAll (ModelMap model){
-
-        //code below will be at service layer
-
-        String ssoId = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoId);
-
-        List<User> users = userAdmin.getTeam().getUsers();
-
-        users.remove(userAdmin);
-
-        model.addAttribute("users", users);
-
-        return "showAll";
-    }
-
-    private String getPrincipal(){
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
-    }
-
-
 
 }
