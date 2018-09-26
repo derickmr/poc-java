@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -44,6 +42,8 @@ public class UserServiceImp implements UserService {
         Team team = new Team();
 
         team.setName("Initial name");
+
+        team.setTeamOwner(user);
 
         teamDao.save(team);
 
