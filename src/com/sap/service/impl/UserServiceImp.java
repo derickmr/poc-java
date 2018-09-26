@@ -7,6 +7,8 @@ import com.sap.model.User;
 import com.sap.model.UserType;
 import com.sap.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +41,7 @@ public class UserServiceImp implements UserService {
     @Override
     public void saveAdmin (User user){
 
-        Team team = new Team();
 
-        team.setName("Initial name");
-
-        teamDao.save(team);
-
-        user.setTeam(team);
 
         user.setUserType(UserType.ADMIN.getUserType());
         save(user);
@@ -118,5 +114,18 @@ public class UserServiceImp implements UserService {
         List<User> users = new ArrayList<>(userDao.getAllUsers());
 
         return users;
+    }
+
+    //Method that gets the current logged user
+    private String getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
     }
 }
