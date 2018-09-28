@@ -9,6 +9,7 @@
 
     <context:annotation-config/>
     <mvc:annotation-driven/>
+    <mvc:resources mapping="/resources/**" location="WEB-INF/resources"/>
     <bean name="userDao" class="com.sap.dao.impl.UserDaoImp">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
