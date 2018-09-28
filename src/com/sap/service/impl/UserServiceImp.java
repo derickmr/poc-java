@@ -43,14 +43,18 @@ public class UserServiceImp implements UserService {
 
         team.setName("Initial name");
 
-        team.setTeamOwner(user);
-
         teamDao.save(team);
 
         user.setTeam(team);
 
         user.setUserType(UserType.ADMIN.getUserType());
+
         save(user);
+
+        team.setTeamOwner(user);
+
+        teamDao.save(team);
+
 
     }
 
@@ -68,10 +72,15 @@ public class UserServiceImp implements UserService {
 
         User currentUser = getCurrentUser();
 
-        if ((!currentUser.equals(user.getTeam().getTeamOwner())) || (!currentUser.equals(user)))
-              return false;
 
-        return true;
+        if (currentUser.equals(user.getTeam().getTeamOwner()))
+            return true;
+
+        if (currentUser.equals(user))
+            return true;
+
+        return false;
+
     }
 
     @Override
@@ -150,8 +159,8 @@ public class UserServiceImp implements UserService {
 
     }
 
-    //Method that gets the current logged ssoId
 
+    //Method that gets the current logged ssoId
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
