@@ -1,0 +1,166 @@
+.teste{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: #333333;
+}
+.centralize{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.meuBox{
+    width: 300px;
+    height: 300px;
+    background: #fff;
+}
+.redColor{
+    color: red;
+}
+/* Bordered form */
+form {
+    border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+
+.adminButtons{
+    background-color: #cccccc;
+    font-family: "Arial monospaced for SAP";
+    color: #000;
+    padding: 6px 12px;
+    margin: 2px;
+    border: #000000;
+    cursor: pointer;
+    width: auto;
+
+}
+
+.logouButton{
+
+}
+
+a:link{
+    text-decoration: none;
+    color: black;
+}
+
+a:visited{
+    color: black;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 16px;
+}
+
+/* The "Forgot password" text */
+span.password {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.password {
+        display: block;
+        float: none;
+    }
+    .cancelbtn {
+        width: 100%;
+    }
+}
+
+.fontCustomized{
+
+}
+
+.greenColor {
+    color: green;
+}
+
+.arial{
+    font-family: "Arial monospaced for SAP";
+    color: whitesmoke;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+#customers {
+    font-family: "Arial monospaced for SAP";
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#users td, #customers th {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+
+#users tr:hover {background-color: black;}
+
+#users th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #333333;
+    color: white;
+}
+
+.colorBackground{
+    background-color: #333333;
+}
+
+.blackBackground{
+    background-color: black;
+}
