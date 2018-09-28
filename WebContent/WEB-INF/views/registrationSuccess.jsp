@@ -9,14 +9,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+    <style>
+        <%@include file="/WEB-INF/resources/login_style.css"%>
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>User Registration form</title>
 </head>
-<body>
+<body class="teste arial">
 
 <div class="success">
-    Confirmation message : ${success}
+    <p class="greenColor">${success}</p>
     <br/>
-    Go to <a href="<c:url value="/login" />">Login</a> or <a href="<c:url value="/admin"/> ">Admin page</a>
+     Go to <a href="<c:url value="/login" />">Login</a> page
 </div>
 
 

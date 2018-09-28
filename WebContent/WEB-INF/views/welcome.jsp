@@ -9,19 +9,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <style>
+        <%@include file="/WEB-INF/resources/login_style.css"%>
+    </style>
     <title>Welcome page</title>
 </head>
-<body>
-
+<body class="centralize colorBackground arial">
+<div id="main">
     <div class="success">
-        This is a welcome page.
+       <h2 class="arial"> Welcome to the Team Management System page! </h2>
     </div>
-
+    <br/>
     <div>
-        Go to <a href="<c:url value='/login' />">Login page</a>
-        <br/>
-        New Team Owner? <a href="<c:url value='/newAdmin' />">Register!</a>
+        <h4 class="centralize arial">Go to <a class="centralize arial" href="<c:url value='/login' />"> Login page</a></h4>
+        <h4 class="centralize arial">New Team Owner? <a href="<c:url value='/newAdmin' />"> Register!</a></h4>
     </div>
-
+</div>
 </body>
 </html>

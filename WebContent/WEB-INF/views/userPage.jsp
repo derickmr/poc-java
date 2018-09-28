@@ -9,14 +9,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+
+    <style>
+        <%@include file="/WEB-INF/resources/login_style.css"%>
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <title>User Page</title>
 </head>
-<body>
+<body class="colorBackground centralize arial">
 
 <div>
 
-    <h2>Welcome : ${pageContext.request.userPrincipal.name} |
-        <a href="<c:url value="/logout" />" > Logout</a></h2>
+    <h2>Welcome ${pageContext.request.userPrincipal.name}! <a href="<c:url value="/logout" />" > <button class="adminButtons"><i class="fa fa-sign-out"> Logout </i></button></a> </h2>
 
 </div>
 
