@@ -7,19 +7,15 @@ import com.sap.service.TeamService;
 import com.sap.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -40,17 +36,20 @@ public class MainController {
 
     }
 
-    @RequestMapping(value="/admin", method = RequestMethod.GET)
+   /* @RequestMapping(value="/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
 
-        model.addAttribute("user", getPrincipal());
+        model.addAttribute("user", null);
 
         return "admin";
     }
 
+    */
+
+
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage (ModelMap model){
-        model.addAttribute("user", getPrincipal());
+        model.addAttribute("user", userService.getCurrentUser());
         return "accessDenied";
     }
 
@@ -69,6 +68,7 @@ public class MainController {
         return "redirect:/login?logout";
     }
 
+        /*
     @RequestMapping(value = "/newUser", method = RequestMethod.GET)
     public String newRegistration (ModelMap model){
         User user = new User ();
@@ -76,110 +76,8 @@ public class MainController {
         return "newuser";
     }
 
-    @RequestMapping(value = "/newUser", method = RequestMethod.POST)
-    public String saveRegistration (@Valid User user, BindingResult result, ModelMap model){
-
-       /* if (result.hasErrors()){
-            System.out.println("There are errors");
-            return "newuser";
-        }
         */
 
-        String ssoId = getPrincipal();
-
-        User userAdmin = userService.getUserBySsoId(ssoId);
-
-        user.setTeam(userAdmin.getTeam());
-
-        userService.saveUser(user);
-
-        System.out.println("User id: " + user.getId());
-        System.out.println("User password: " + user.getPassword());
-        System.out.println("User type: " + user.getUserType());
-
-        model.addAttribute("success", "User has been registered successfully");
-        return "registrationSuccess";
-    }
-
-
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
-    public String deleteUser (ModelMap model){
-
-        User user = new User();
-        model.addAttribute("user", user);
-
-
-        String ssoIdAdmin = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoIdAdmin);
-        List<User> users = userAdmin.getTeam().getUsers();
-        users.remove(userAdmin);
-
-        model.addAttribute("users", users);
-
-        return "deleteDropdown";
-
-    }
-
-    @RequestMapping(value = "/deleteUserBySsoId", method = RequestMethod.POST)
-    public String applyDeleteUser (User user, ModelMap model){
-
-       /* String ssoId = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoId);
-        User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
-        Integer teamId = userAdmin.getTeam().getId();
-        if (teamId == userToBeDeleted.getTeam().getId()){
-            userService.deleteUserByID(userToBeDeleted.getId());
-        }
-        */
-
-        //code below should be at UserService
-
-        User userToBeDeleted = userService.getUserBySsoId(user.getSsoId());
-
-        Team team = userToBeDeleted.getTeam();
-
-        List<User> users = team.getUsers();
-
-        users.remove(userToBeDeleted);
-
-        team.setUsers(users);
-
-        teamService.save(team);
-
-        userService.deleteUserByID(userToBeDeleted.getId());
-
-        return "admin";
-    }
-
-    @RequestMapping(value = "/updateUser", method = RequestMethod.GET)
-    public String updateUser (ModelMap model){
-
-      /*  User userToBeModified = new User();
-        User userWithChanges = new User();
-
-        String ssoIdAdmin = getPrincipal();
-        User userAdmin = userService.getUserBySsoId(ssoIdAdmin);
-        List<User> users = userAdmin.getTeam().getUsers();
-
-        users.remove(userAdmin);
-
-        model.addAttribute("users", users);
-        model.addAttribute("userToBeModified", userToBeModified);
-        model.addAttribute("userWithChanges", userWithChanges);
-
-        */
-
-        return "newuser";
-    }
-
-    @RequestMapping(value = "/updateSelectedUser", method = RequestMethod.POST)
-    public String updateUser (User userToBeModified, User userWithChanges, ModelMap model){
-
-
-
-
-        return "updateuser";
-    }
 
 
     @RequestMapping(value = "/userPage")
@@ -216,9 +114,9 @@ public class MainController {
     @RequestMapping(value = "/showAll")
     public String showAll (ModelMap model){
 
-        String ssoId = userService.getPrincipal();
+        //String ssoId = userService.getPrincipal();
 
-        User userAdmin = userService.getUserBySsoId(ssoId);
+        User userAdmin = userService.getCurrentUser();
 
         List<User> users = userService.getTeamMates(userAdmin);
 
