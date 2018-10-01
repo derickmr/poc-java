@@ -21,8 +21,8 @@
     </div>
     <br/>
     <div>
-        <h4 class="centralize arial">Go to <a class="centralize arial" href="<c:url value='/login' />"> Login page</a></h4>
-        <h4 class="centralize arial">New Team Owner? <a href="<c:url value='/newAdmin' />"> Register!</a></h4>
+        <h4 class="centralize arial">Go to&nbsp;<a class="centralize arial" href="<c:url value='/login' />"> Login page</a></h4>
+        <h4 class="centralize arial">New Team Owner?&nbsp;<a href="<c:url value='/newAdmin' />"> Register!</a></h4>
     </div>
 </div>
 </body>
