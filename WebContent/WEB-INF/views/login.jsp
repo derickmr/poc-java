@@ -16,7 +16,7 @@
         <%--<link rel="stylesheet" type="text/css" href="/WEB-INF/resources/login_style.css">--%>
     <title>Login page</title>
 </head>
-<body>
+<body class="arial">
 
 <style>
     <%@include file="/WEB-INF/resources/login_style.css"%>
@@ -27,7 +27,6 @@
         <div class="box">
             <form action="${loginUrl}" method="post" class="form-horizontal">
                 <c:if test="${param.error != null}">
-                    <%--<div class="alert alert-danger redColor">--%>
                     <div class = "redColor">
                         <p>Invalid Single Sign On ID and Password.</p>
                     </div>
@@ -39,12 +38,12 @@
                 </c:if>
 
                 <div class="input-group input-sm">
-                    <label class="input-group-addon" for="ssoId"><i class="fa fa-user"></i></label>
+                    <label class="input-group-addon" for="ssoId">SSO ID</label>
                     <input type="text" class="form-control" id="ssoId" name="ssoId" placeholder="Enter Single Sign On ID" required>
                 </div>
 
                 <div class="input-group input-sm">
-                    <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
+                    <label class="input-group-addon" for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
                 </div>
 
@@ -53,18 +52,8 @@
 
                 <div class="form-actions centralize">
                     <button type="submit"> Login </button>
-
-                    <%--<input type="submit"--%>
-                           <%--class="btn btn-block btn-primary btn-default" value="Log in">--%>
-
                     <a href="/"> <button type="button" class="cancelbtn">Cancel</button> </a>
-
                 </div>
-
-                <%--<div class="container" style="background-color:#f1f1f1">--%>
-                    <%--<a href="/"> <button type="button" class="cancelbtn">Cancel</button> </a>--%>
-                <%--</div>--%>
-
             </form>
         </div>
 
