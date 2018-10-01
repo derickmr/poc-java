@@ -8,10 +8,13 @@
     <http auto-config="true">
         <intercept-url pattern="/home" access="permitAll" />
         <intercept-url pattern="/" access="permitAll" />
+        <!--<intercept-url pattern="/userPage/*" access="hasRole('USER')"/>-->
+        <!--<intercept-url pattern="userPage" access="hasRole('USER')"/>-->
+        <intercept-url pattern="/userPage" access="hasRole('USER')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/newuser" access="hasRole('ADMIN')" />
         <intercept-url pattern="/db/**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/userPage/" access="hasRole('USER')"/>
+
 
         <form-login  login-page="/login"
                      username-parameter="ssoId"
