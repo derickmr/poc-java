@@ -40,7 +40,10 @@ public class AdminController {
             return "accessDenied";
         }
 
-
+        if (userService.getUserBySsoId(user.getSsoId())!=null) {
+            model.addAttribute("goBack", "admin");
+            return "userAlreadyExists";
+        }
         userService.saveUserAtOwnerTeam(user, userService.getCurrentUser());
 
         return "redirect:/admin";
@@ -81,23 +84,44 @@ public class AdminController {
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)
     public String saveRegistration (@Valid User user, BindingResult result, ModelMap model){
 
-        User admin = userService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
 
         if (user.getId() != null) {
-            User search = userService.getUserByID(user.getId());
 
+            if (!userService.verifyIfActionCanBeAppliedToUser(currentUser)){
+                model.addAttribute("user", currentUser);
+                return "accessDenied";
+            }
 
-                search.setPassword(user.getPassword());
-                search.setSsoId(user.getSsoId());
-                userService.saveUserAtOwnerTeam(search, admin);
-                model.addAttribute("success", "User has been registered successfully");
-                return "redirect:/admin";
+            User registeredUser = userService.getUserByID(user.getId());
+
+            if (userService.getUserBySsoId(user.getSsoId())!=null){
+                if (userService.getUserBySsoId(user.getSsoId()).getId() != registeredUser.getId()){
+                    model.addAttribute("goBack", "admin");
+                    return "userAlreadyExists";
+
+                }
+            }
+
+            registeredUser.setPassword(user.getPassword());
+            registeredUser.setSsoId(user.getSsoId());
+            userService.saveUserAtOwnerTeam(registeredUser, currentUser);
+            return "redirect:/admin";
 
         }
 
-        userService.saveUserAtOwnerTeam(user, admin);
+        if (!userService.isTeamOwner(currentUser)) {
+            model.addAttribute("user", userService.getCurrentUser());
+            return "accessDenied";
+        }
 
-        model.addAttribute("success", "User has been registered successfully");
+        if (userService.getUserBySsoId(user.getSsoId()) != null){
+            model.addAttribute("goBack", "admin");
+            return "userAlreadyExists";
+        }
+
+        userService.saveUserAtOwnerTeam(user, currentUser);
+
         return "redirect:/admin";
     }
 
