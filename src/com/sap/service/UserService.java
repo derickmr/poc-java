@@ -33,4 +33,6 @@ public interface UserService {
 
     boolean verifyIfActionCanBeAppliedToUser (User user);
 
+    boolean isTeamOwner (User user);
+
 }

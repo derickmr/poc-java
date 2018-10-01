@@ -135,6 +135,15 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public boolean isTeamOwner(User user) {
+
+        if (user.getTeam().getTeamOwner().equals(user))
+            return true;
+
+        return false;
+    }
+
+    @Override
     public void updateUser(User user) {
 
         userDao.updateUser(user);
