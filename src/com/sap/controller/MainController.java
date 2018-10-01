@@ -68,16 +68,6 @@ public class MainController {
         return "redirect:/login?logout";
     }
 
-        /*
-    @RequestMapping(value = "/newUser", method = RequestMethod.GET)
-    public String newRegistration (ModelMap model){
-        User user = new User ();
-        model.addAttribute("user", user);
-        return "newuser";
-    }
-
-        */
-
 
 
     @RequestMapping(value = "/userPage")
@@ -97,11 +87,14 @@ public class MainController {
         return "newadmin";
     }
 
-    //ok
+
     @RequestMapping(value = "/newAdmin", method = RequestMethod.POST)
     public String saveAdminRegistration (User user, ModelMap model){
 
-
+        if (userService.getUserBySsoId(user.getSsoId())!=null) {
+            model.addAttribute("goBack", "/newAdmin");
+            return "userAlreadyExists";
+        }
         userService.saveAdmin(user);
 
 
