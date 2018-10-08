@@ -179,5 +179,25 @@ public class AdminController {
 
         return "redirect:/calendars";
     }
+	
+	@RequestMapping(value = "/showDayDetails/{id}")
+    public String editCalendar (@PathVariable("id") Integer id, Model model){
+
+        Day day = dayService.getDayByID(id);
+
+        User owner = userService.getCurrentUser();
+
+        if (!userService.isTeamOwner(owner)){
+            model.addAttribute("user", owner);
+            return "accessDenied";
+        }
+
+        model.addAttribute("owner", owner);
+        model.addAttribute("day", day);
+        model.addAttribute("workDays", day.getWorkDays());
+
+        return "showDayDetails";
+
+    }
 
 }
