@@ -4,11 +4,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER")
 public class User {
 
+    //@Column(name = "USER_ID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -25,6 +27,9 @@ public class User {
     @Column(name="SSO_ID", unique=true, nullable=false)
     private String ssoId;
 
+    @OneToMany(mappedBy = "user", targetEntity = WorkDay.class, fetch = FetchType.EAGER)
+    private Set<WorkDay> workDays;
+
     public String getUserType() {
         return userType;
     }
@@ -37,6 +42,13 @@ public class User {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    public Set<WorkDay> getWorkDays() {
+        return workDays;
+    }
+
+    public void setWorkDays(Set<WorkDay> workDays) {
+        this.workDays = workDays;
+    }
 
     public String getSsoId() {
         return ssoId;
@@ -45,7 +57,6 @@ public class User {
     public void setSsoId(String ssoId) {
         this.ssoId = ssoId;
     }
-
 
     public Integer getId() {
         return id;
@@ -91,3 +102,4 @@ public class User {
         return "" + ssoId;
     }
 }
+//
