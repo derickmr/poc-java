@@ -242,5 +242,17 @@ public class AdminController {
 
         return "redirect:/userPage";
     }
+	
+	@RequestMapping(value = "/calendars")
+    public String calendars (Model model){
+
+        List<TeamCalendar> teamCalendars = new ArrayList<>(userService.getCurrentUser().getTeam().getTeamCalendars());
+
+        model.addAttribute("calendars", teamCalendars);
+        model.addAttribute("teamCalendar", new TeamCalendar());
+
+
+        return "calendars";
+    }
 
 }
