@@ -50,4 +50,39 @@ public class DayServiceImp implements DayService {
     public Day getDayByID(Integer id) {
         return dayDao.getDayByID(id);
     }
+	
+	@Override
+    public TeamCalendar generateDays(TeamCalendar teamCalendar) {
+
+        Integer startDay = teamCalendar.getStartDay();
+        Integer endDay = teamCalendar.getEndDay();
+        Integer startMonth = teamCalendar.getStartMonth();
+        Integer endMonth = teamCalendar.getEndMonth();
+        Integer numberOfDays = calculateNumberOfDays(startDay, startMonth, endDay, endMonth);
+
+        List<Day> days = new ArrayList<>();
+
+        Day day;
+
+        while (numberOfDays > 0){
+            day = new Day();
+            day.setTeamCalendar(teamCalendar);
+            day.setDay(startDay);
+            day.setMonth(startMonth);
+            save(day);
+            days.add(day);
+            startDay++;
+
+            if (startDay > 30){
+                startMonth++;
+                startDay = 1;
+            }
+            numberOfDays--;
+        }
+
+        teamCalendar.setDays(new HashSet<>(days));
+
+        return teamCalendar;
+    }
+
 }
