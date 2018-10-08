@@ -73,21 +73,8 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
         List<TeamCalendar> calendars = new ArrayList<>(teamCalendarDao.getAllCalendars());
         return calendars;
     }
-
-    @Override
-    public void createCalendar(TeamCalendar calendar) {
-
-        save(calendar);
-
-        calendar = dayService.generateDays(calendar);
-
-        save(calendar);
-
-        workDayService.generateWorkDays(calendar);
-
-    }
-
-    @Override
+	
+	@Override
     public boolean isCalendarDatePossible(TeamCalendar calendar, List<TeamCalendar> teamCalendars) {
 
         Integer startDay = calendar.getStartDay();
