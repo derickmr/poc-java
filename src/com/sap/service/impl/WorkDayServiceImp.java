@@ -40,5 +40,21 @@ public class WorkDayServiceImp implements WorkDayService {
         return workDays;
     }
 
-    
+    @Override
+    public void generateWorkDays (TeamCalendar teamCalendar){
+
+        WorkDay workDay;
+
+        for (Day day :
+                teamCalendar.getDays()) {
+            for (User user :
+                    teamCalendar.getTeam().getUsers()) {
+                workDay = new WorkDay();
+                workDay.setShift(Shift.ANY.getShift());
+                workDay.setDay(day);
+                workDay.setUser(user);
+                save(workDay);
+            }
+        }
+    }
 }
