@@ -59,17 +59,13 @@ button {
 
 }
 
-.logouButton{
-
-}
-
 a:link{
     text-decoration: none;
-    color: blue;
+    color: cornflowerblue;
 }
 
 a:visited{
-    color: blue;
+    color: cornflowerblue;
 }
 
 /* Add a hover effect for buttons */
