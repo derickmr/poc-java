@@ -130,6 +130,12 @@ public class AdminController {
         }
 
         userService.saveUserAtOwnerTeam(user, currentUser);
+		
+		List<TeamCalendar> teamCalendars;
+
+        if ((teamCalendars = new ArrayList<>(currentUser.getTeam().getTeamCalendars())) != null){
+            workDayService.generateWorkDaysForNewUser(user, teamCalendars);
+        }
 
         return "redirect:/admin";
     }
