@@ -157,5 +157,27 @@ public class AdminController {
 
         return "workDayDetail";
     }
+	
+	@RequestMapping(value = "/newCalendar", method = RequestMethod.POST)
+    public String saveCalendar (@Valid TeamCalendar calendar, Model model){
+
+        User currentUser = userService.getCurrentUser();
+
+        if (!userService.isTeamOwner(currentUser)){
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+
+
+        if (teamCalendarService.verifyDate(calendar, currentUser.getTeam())){
+
+            calendar.setTeam(currentUser.getTeam());
+
+            teamCalendarService.createCalendar(calendar);
+
+        }
+
+        return "redirect:/calendars";
+    }
 
 }
