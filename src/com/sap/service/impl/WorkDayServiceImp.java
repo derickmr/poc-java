@@ -57,4 +57,23 @@ public class WorkDayServiceImp implements WorkDayService {
             }
         }
     }
+	
+	@Override
+    public User generateWorkDaysForNewUser(User user, List<TeamCalendar> teamCalendars) {
+
+        WorkDay workDay;
+
+        for (TeamCalendar teamCalendar :
+                teamCalendars) {
+            for (Day day :
+                    teamCalendar.getDays()) {
+                workDay = new WorkDay();
+                workDay.setShift(Shift.ANY.getShift());
+                workDay.setDay(day);
+                workDay.setUser(user);
+                save(workDay);
+            }
+        }
+        return user;
+    }
 }
