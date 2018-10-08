@@ -112,4 +112,17 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
 
         return true;
     }
+	
+	@Override
+    public void createCalendar(TeamCalendar calendar) {
+
+        save(calendar);
+
+        calendar = dayService.generateDays(calendar);
+
+        save(calendar);
+
+        workDayService.generateWorkDays(calendar);
+
+    }
 }
