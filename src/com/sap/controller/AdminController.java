@@ -20,6 +20,15 @@ public class AdminController {
 
     @Resource
     private UserService userService;
+	
+	@Resource
+    private TeamCalendarService teamCalendarService;
+
+    @Resource
+    private DayService dayService;
+
+    @Resource
+    private WorkDayService workDayService;
 
     @RequestMapping(value = "/admin")
     public String listUsers (Model model){
@@ -123,6 +132,30 @@ public class AdminController {
         userService.saveUserAtOwnerTeam(user, currentUser);
 
         return "redirect:/admin";
+    }
+	
+	@RequestMapping(value = "/workDayDetail/{id}")
+    public String workDayDetail (@PathVariable("id") Integer id, Model model){
+
+        User currentUser = userService.getCurrentUser();
+
+        if (userService.isTeamOwner(currentUser)){
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+
+        }
+
+        WorkDay workDay = workDayService.getWorkDayById(id);
+
+        List<String> shiftOptions = new ArrayList<>();
+
+        shiftOptions.add("Day");
+        shiftOptions.add("Late");
+
+        model.addAttribute("workDay", workDay);
+        model.addAttribute("shiftOptions", shiftOptions);
+
+        return "workDayDetail";
     }
 
 }
