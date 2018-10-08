@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "TEAM")
@@ -16,7 +17,7 @@ public class Team {
     private Integer id;
 
     @NotEmpty
-    @Column(name = "team_name", unique = true)
+    @Column(name = "team_name")
     private String name;
 
     @OneToMany(mappedBy = "team", targetEntity = User.class, fetch = FetchType.EAGER)
@@ -24,6 +25,17 @@ public class Team {
 
     @OneToOne
     private User teamOwner;
+
+    @OneToMany(mappedBy = "team", targetEntity = TeamCalendar.class, fetch = FetchType.EAGER)
+    private Set<TeamCalendar> teamCalendars;
+
+    public Set<TeamCalendar> getTeamCalendars() {
+        return teamCalendars;
+    }
+
+    public void setTeamCalendars(Set<TeamCalendar> teamCalendars) {
+        this.teamCalendars = teamCalendars;
+    }
 
     public User getTeamOwner() {
         return teamOwner;
@@ -81,3 +93,4 @@ public class Team {
     }
 
 }
+//
