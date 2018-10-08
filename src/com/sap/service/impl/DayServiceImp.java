@@ -84,5 +84,42 @@ public class DayServiceImp implements DayService {
 
         return teamCalendar;
     }
+	
+	@Override
+    public void registerWorkDays (List<Day> days, List<WorkDay> workDays){
+
+        Set<WorkDay> workDaySet = new HashSet<>(workDays);
+        Set<WorkDay> workDaySetToBeSaved;
+
+        for (Day day:
+             days) {
+            workDaySetToBeSaved = new HashSet<>();
+            for (WorkDay workDay:
+                 workDaySet) {
+                if (workDay.getDay().equals(day)){
+                    workDaySetToBeSaved.add(workDay);
+                }
+            }
+            day.setWorkDays(workDaySetToBeSaved);
+            save(day);
+        }
+    }
+
+    private Integer calculateNumberOfDays(Integer startDay, Integer startMonth, Integer endDay, Integer endMonth) {
+
+        Integer numberOfDays = 0;
+
+        String dateBeforeString = "2018-" + startMonth + "-" + startDay;
+        String dateAfterString = "2018-" + endMonth + "-" + endDay;
+
+        LocalDate dateBefore = LocalDate.parse(dateBeforeString, DateTimeFormatter.ofPattern("yyyy-M-d"));
+        LocalDate dateAfter = LocalDate.parse(dateAfterString, DateTimeFormatter.ofPattern("yyyy-M-d"));
+
+        numberOfDays = Math.toIntExact(ChronoUnit.DAYS.between(dateBefore, dateAfter));
+
+        return numberOfDays + 1;
+        
+
+    }
 
 }
