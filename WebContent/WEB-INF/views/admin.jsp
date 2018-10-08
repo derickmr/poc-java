@@ -53,7 +53,6 @@
                 <form:input path="id" hidden="true"/>
             </td>
         </tr>
-        <tr>
 
         <tr>
             <td>
@@ -72,7 +71,7 @@
                 </form:label>
             </td>
             <td>
-                <form:input path="password" placeholder="Password"/>
+                <form:input type="password" path="password" placeholder="Password"/>
             </td>
         </tr>
         <tr>
@@ -98,7 +97,7 @@
             <th width="120">User SSO ID</th>
             <%--<th width="120">User Encrypted Password</th>--%>
             <th width="60">Edit</th>
-            <th width="60">Delete</th>
+            <th width="60">Delete</th
         </tr>
         <c:forEach items="${users}" var="user">
             <tr>
@@ -112,5 +111,6 @@
     </table>
 </c:if>
 <%--<button class="adminButtons"><i class="fa fa-sign-out"><a href="<c:url value="/logout" />" > Logout</a></i></button>--%>
+<a href="calendars">Administrate team calendars</a>
 </body>
 </html>
