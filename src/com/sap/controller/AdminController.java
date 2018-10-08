@@ -199,5 +199,27 @@ public class AdminController {
         return "showDayDetails";
 
     }
+	
+	@RequestMapping(value = "/editDay")
+    public String editDay (Day day, Model model){
+
+        User currentUser = userService.getCurrentUser();
+
+        if (!userService.isTeamOwner(currentUser)){
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+
+        Day dayToBeSet = dayService.getDayByID(day.getId());
+
+        dayToBeSet.setHoliday(day.isHoliday());
+
+        dayToBeSet.setWeekend(day.isWeekend());
+
+        dayService.save(dayToBeSet);
+
+        return "redirect:/calendars";
+
+    }
 
 }
