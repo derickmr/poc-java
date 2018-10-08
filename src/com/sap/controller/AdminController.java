@@ -221,5 +221,26 @@ public class AdminController {
         return "redirect:/calendars";
 
     }
+	
+	 @RequestMapping(value = "/editWorkDay")
+    public String editWorkDay (Model model, WorkDay workDay){
+
+        User currentUser = userService.getCurrentUser();
+
+        if (userService.isTeamOwner(currentUser)){
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+
+        WorkDay workDayToBeSet = workDayService.getWorkDayById(workDay.getId());
+
+        workDayToBeSet.setShift(workDay.getShift());
+
+        workDayToBeSet.setCanWorkAtHolidayOrWeekend(workDay.isCanWorkAtHolidayOrWeekend());
+
+        workDayService.save(workDayToBeSet);
+
+        return "redirect:/userPage";
+    }
 
 }
