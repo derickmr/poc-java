@@ -19,13 +19,35 @@
 
     <title>User Page</title>
 </head>
-<body class="colorBackground centralize arial">
+<body class="colorBackground arial">
 
 <div>
-
-    <h2>Welcome ${pageContext.request.userPrincipal.name}! <a href="<c:url value="/logout" />" > <button class="adminButtons"><i class="fa fa-sign-out"> Logout </i></button></a> </h2>
-
+    <h2 class="centralize">Welcome ${user.ssoId}! <a href="<c:url value="/logout" />" > <button class="adminButtons"><i class="fa fa-sign-out"> Logout </i></button></a> </h2>
 </div>
+
+<br/>
+
+    <h3 class="centralize">Days list</h3>
+
+
+        <c:if test="${!empty workDays}">
+            <table id = "workDays" class="centralize">
+                <tr>
+                    <th width="80">Day</th>
+                    <th width="120">Shift</th>
+                    <th width="60">Details</th>
+                </tr>
+                <c:forEach items="${workDays}" var="workDay">
+                    <tr>
+                        <td>${workDay.day.day} - ${workDay.day.month}</td>
+                        <td>${workDay.shift}</td>
+                        <td><a href="<c:url value='/workDayDetail/${workDay.id}' />" ><button class="adminButtons">Details</button></a> </td>
+                        </tr>
+                </c:forEach>
+            </table>
+        </c:if>
+
+<%--</div>--%>
 
 </body>
 </html>
