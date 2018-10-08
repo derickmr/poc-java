@@ -36,15 +36,7 @@ public class MainController {
 
     }
 
-   /* @RequestMapping(value="/admin", method = RequestMethod.GET)
-    public String adminPage(ModelMap model) {
-
-        model.addAttribute("user", null);
-
-        return "admin";
-    }
-
-    */
+   
 
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
@@ -73,8 +65,11 @@ public class MainController {
     @RequestMapping(value = "/userPage")
     public String userPage (ModelMap model){
 
-        User user = new User ();
+        User user = userService.getCurrentUser();
 
+		model.addAttribute("user", user);
+		model.addAttribute("workDays", user.getWorkDays());
+		
         return "userPage";
 
     }
