@@ -165,23 +165,24 @@ public class AdminController {
         return "workDayDetail";
     }
 	
-	@RequestMapping(value = "/newCalendar", method = RequestMethod.POST)
-    public String saveCalendar (@Valid TeamCalendar calendar, Model model){
+	@RequestMapping(value = "/newCalendar")
+    public String saveCalendar (HttpServletRequest request, Model model){
 
         User currentUser = userService.getCurrentUser();
+        LocalDate startDate = LocalDate.parse(request.getParameter("start-date"));
+        LocalDate endDate = LocalDate.parse(request.getParameter("end-date"));
+        TeamCalendar teamCalendar = new TeamCalendar();
+        teamCalendar.setStartDate(startDate);
+        teamCalendar.setEndDate(endDate);
 
         if (!userService.isTeamOwner(currentUser)){
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
 
-
-        if (teamCalendarService.verifyDate(calendar, currentUser.getTeam())){
-
-            calendar.setTeam(currentUser.getTeam());
-
-            teamCalendarService.createCalendar(calendar);
-
+        if (teamCalendarService.verifyIfDateIsPossible (teamCalendar, currentUser.getTeam())) {
+            teamCalendar.setTeam(currentUser.getTeam());
+            teamCalendarService.createCalendar(teamCalendar);
         }
 
         return "redirect:/calendars";
