@@ -104,22 +104,4 @@ public class DayServiceImp implements DayService {
             save(day);
         }
     }
-
-    private Integer calculateNumberOfDays(Integer startDay, Integer startMonth, Integer endDay, Integer endMonth) {
-
-        Integer numberOfDays = 0;
-
-        String dateBeforeString = "2018-" + startMonth + "-" + startDay;
-        String dateAfterString = "2018-" + endMonth + "-" + endDay;
-
-        LocalDate dateBefore = LocalDate.parse(dateBeforeString, DateTimeFormatter.ofPattern("yyyy-M-d"));
-        LocalDate dateAfter = LocalDate.parse(dateAfterString, DateTimeFormatter.ofPattern("yyyy-M-d"));
-
-        numberOfDays = Math.toIntExact(ChronoUnit.DAYS.between(dateBefore, dateAfter));
-
-        return numberOfDays + 1;
-        
-
-    }
-
 }
