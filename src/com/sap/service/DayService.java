@@ -2,7 +2,7 @@ package com.sap.service;
 
 import com.sap.model.Day;
 import com.sap.model.TeamCalendar;
-import com.sap.model.WorkDay;
+import com.sap.model.UserDayRelation;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ public interface DayService {
 
     List<Day> getAllWeekends ();
 
-    TeamCalendar generateDays(TeamCalendar teamCalendar);
+    TeamCalendar generateDays (TeamCalendar teamCalendar);
 
-    void registerWorkDays (List<Day> days, List<WorkDay> workDays);
+    void registerWorkDays (List<Day> days, List<UserDayRelation> workDays);
 
 }
