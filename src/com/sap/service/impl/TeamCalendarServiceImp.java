@@ -54,4 +54,49 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
         userDayRelationService.generateWorkDays(calendar);
 
     }
+	
+	@Override
+    public boolean verifyIfDateIsPossible(TeamCalendar teamCalendar, Team team) {
+
+        LocalDate startDate = teamCalendar.getStartDate();
+        LocalDate endDate = teamCalendar.getEndDate();
+
+        if (startDate.isAfter(endDate))
+            return false;
+
+        if (startDate.isBefore(LocalDate.now()))
+            return false;
+
+        List<TeamCalendar> teamCalendars = new ArrayList<>(team.getTeamCalendars());
+
+        if (teamCalendars.isEmpty())
+            return true;
+
+        for (TeamCalendar teamCalendarIterator :
+                teamCalendars) {
+            LocalDate startDateIterator = teamCalendarIterator.getStartDate();
+            LocalDate endDateIterator = teamCalendarIterator.getEndDate();
+
+            if (startDate.isEqual(startDateIterator) || startDate.isEqual(endDateIterator))
+                return false;
+
+            if (endDate.isEqual(startDateIterator) || endDate.isEqual(endDateIterator))
+                return false;
+
+            if (startDate.isAfter(startDateIterator)) {
+                if (endDate.isBefore(endDateIterator))
+                    return false;
+            }
+
+            if (startDate.isBefore(endDateIterator) && endDate.isAfter(endDateIterator))
+                return false;
+
+            if (startDate.isBefore(startDate) && endDate.isAfter(startDateIterator))
+                return false;
+
+
+        }
+
+        return true;
+    }
 }
