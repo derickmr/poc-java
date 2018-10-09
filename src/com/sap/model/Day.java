@@ -1,6 +1,7 @@
 package com.sap.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,14 +15,16 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "DAY_OF_MONTH")
-    private Integer day;
+    @Column(name = "DATE_OF_DAY")
+    private LocalDate date;
 
-    @Column(name = "MONTH")
-    private Integer month;
+    public LocalDate getDate() {
+        return date;
+    }
 
-    @Column(name = "YEAR")
-    private Integer year;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     private boolean holiday;
 
@@ -58,30 +61,6 @@ public class Day {
         this.id = id;
     }
 
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
     public TeamCalendar getTeamCalendar() {
         return teamCalendar;
     }
@@ -102,15 +81,13 @@ public class Day {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Day date = (Day) o;
-        return Objects.equals(id, date.id) &&
-                Objects.equals(day, date.day) &&
-                Objects.equals(month, date.month) &&
-                Objects.equals(year, date.year);
+        Day day = (Day) o;
+        return Objects.equals(id, day.id) &&
+                Objects.equals(date, day.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, day, month, year);
+        return Objects.hash(id, date);
     }
 }
