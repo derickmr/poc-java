@@ -54,30 +54,20 @@ public class DayServiceImp implements DayService {
 	@Override
     public TeamCalendar generateDays(TeamCalendar teamCalendar) {
 
-        Integer startDay = teamCalendar.getStartDay();
-        Integer endDay = teamCalendar.getEndDay();
-        Integer startMonth = teamCalendar.getStartMonth();
-        Integer endMonth = teamCalendar.getEndMonth();
-        Integer numberOfDays = calculateNumberOfDays(startDay, startMonth, endDay, endMonth);
+        LocalDate startDate = teamCalendar.getStartDate();
+        LocalDate endDate = teamCalendar.getEndDate();
+        LocalDate localDateIterator = startDate;
 
         List<Day> days = new ArrayList<>();
-
         Day day;
 
-        while (numberOfDays > 0){
+        while (!localDateIterator.isAfter(endDate)){
             day = new Day();
+            day.setDate(localDateIterator);
             day.setTeamCalendar(teamCalendar);
-            day.setDay(startDay);
-            day.setMonth(startMonth);
             save(day);
             days.add(day);
-            startDay++;
-
-            if (startDay > 30){
-                startMonth++;
-                startDay = 1;
-            }
-            numberOfDays--;
+            localDateIterator = localDateIterator.plusDays(1);
         }
 
         teamCalendar.setDays(new HashSet<>(days));
