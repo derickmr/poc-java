@@ -19,61 +19,27 @@
 </head>
 <body class="arial colorBackground">
 
+<div>
+<a class="whiteFont" href="/admin">Administrate users</a>
+<br/>
+</div>
 
-<form:form action="/newCalendar" commandName="teamCalendar">
-    <table>
-        <tr>
-            <td>
-                <form:label path="startDay">
-                    <spring:message text="Insert start day"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="startDay" placeholder="Start day"/>
-            </td>
-        </tr>
-        <tr>
+<form action="/newCalendar">
+    <label for="start-date">Start Date</label>
+    <input type="date" class="form-control" id="start-date" name="start-date">
 
-        <tr>
-            <td>
-                <form:label path="startMonth">
-                    <spring:message text="Insert start month"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="startMonth" placeholder="Start month"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form:label path="endDay">
-                    <spring:message text="Insert the end day"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="endDay" placeholder="End day"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form:label path="endMonth">
-                    <spring:message text="Insert the end month"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="endMonth" placeholder="End month"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button class="adminButtons"><input type="submit" value="<spring:message text="Add Calendar"/>"/> </button>
-            </td>
-        </tr>
+    <br/>
+    <br/>
 
+    <label for="end-date">End Date</label>
+    <input type="date" class="form-control" id="end-date" name="end-date">
 
-    </table>
-</form:form>
+    <br/>
+    <br/>
 
+    <button type="submit" class="adminButtons">Create calendar</button>
+
+</form>
 
 <table id = "calendars" class="centralize">
     <tr>
@@ -84,7 +50,7 @@
     <c:forEach items="${calendars}" var="calendar">
         <c:forEach items="${calendar.days}" var="day">
         <tr>
-            <td>${day.day}-${day.month}</td>
+            <td>${day.date}</td>
             <td><a href="<c:url value='/showDayDetails/${day.id}' />" ><button class="adminButtons">Details</button></a> </td>
             <td>
                 <c:choose>
