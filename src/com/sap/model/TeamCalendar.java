@@ -1,6 +1,7 @@
 package com.sap.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -11,10 +12,24 @@ public class TeamCalendar {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Integer startDay;
-    private Integer endDay;
-    private Integer startMonth;
-    private Integer endMonth;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CALENDAR_ID")
@@ -29,38 +44,6 @@ public class TeamCalendar {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getStartDay() {
-        return startDay;
-    }
-
-    public void setStartDay(Integer startDay) {
-        this.startDay = startDay;
-    }
-
-    public Integer getEndDay() {
-        return endDay;
-    }
-
-    public void setEndDay(Integer endDay) {
-        this.endDay = endDay;
-    }
-
-    public Integer getStartMonth() {
-        return startMonth;
-    }
-
-    public void setStartMonth(Integer startMonth) {
-        this.startMonth = startMonth;
-    }
-
-    public Integer getEndMonth() {
-        return endMonth;
-    }
-
-    public void setEndMonth(Integer endMonth) {
-        this.endMonth = endMonth;
     }
 
     public Team getTeam() {
