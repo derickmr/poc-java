@@ -82,7 +82,6 @@ public class MainController {
         return "newadmin";
     }
 
-
     @RequestMapping(value = "/newAdmin", method = RequestMethod.POST)
     public String saveAdminRegistration (User user, ModelMap model){
 
@@ -97,8 +96,6 @@ public class MainController {
         return "registrationSuccess";
     }
 
-
-    //ok
     @RequestMapping(value = "/showAll")
     public String showAll (ModelMap model){
 
@@ -112,39 +109,4 @@ public class MainController {
 
         return "showAll";
     }
-
-
-    @RequestMapping(value = "/mock")
-    public void mockUsers (){
-
-        User user = new User();
-
-        Team team = new Team();
-
-        team.setName("teste");
-
-        teamService.save(team);
-
-        System.out.println("Team id: " + team.getId());
-
-        for (int i = 0; i<3; i++){
-
-            String n = "";
-
-            n += (int) (Math.random() * 10) + 1;
-
-            user.setSsoId(n);
-            user.setPassword("12345");
-            user.setUserType(UserType.USER.getUserType());
-            user.setTeam(teamService.getTeamByID(1));
-
-            System.out.println("User: " + user);
-
-            userService.save(user);
-
-        }
-
-
-    }
-
 }
