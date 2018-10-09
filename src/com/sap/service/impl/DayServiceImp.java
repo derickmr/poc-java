@@ -1,12 +1,12 @@
 package com.sap.service.impl;
 
 import com.sap.dao.DayDao;
-import com.sap.dao.WorkDayDao;
+import com.sap.dao.UserDayRelationDao;
 import com.sap.model.Day;
 import com.sap.model.TeamCalendar;
-import com.sap.model.WorkDay;
+import com.sap.model.UserDayRelation;
 import com.sap.service.DayService;
-import com.sap.service.WorkDayService;
+import com.sap.service.UserDayRelationService;
 import org.mockito.cglib.core.Local;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ public class DayServiceImp implements DayService {
     DayDao dayDao;
 
     @Resource
-    WorkDayService workDayService;
+    UserDayRelationService userDayRelationService;
 
     @Override
     public void save(Day day) {
@@ -86,21 +86,21 @@ public class DayServiceImp implements DayService {
     }
 	
 	@Override
-    public void registerWorkDays (List<Day> days, List<WorkDay> workDays){
+    public void registerWorkDays (List<Day> days, List<UserDayRelation> userDayRelations){
 
-        Set<WorkDay> workDaySet = new HashSet<>(workDays);
-        Set<WorkDay> workDaySetToBeSaved;
+        Set<UserDayRelation> userDayRelationSet = new HashSet<>(userDayRelations);
+        Set<UserDayRelation> userDayRelationSetToBeSaved;
 
         for (Day day:
              days) {
-            workDaySetToBeSaved = new HashSet<>();
-            for (WorkDay workDay:
-                 workDaySet) {
-                if (workDay.getDay().equals(day)){
-                    workDaySetToBeSaved.add(workDay);
+            userDayRelationSetToBeSaved = new HashSet<>();
+            for (UserDayRelation userDayRelation:
+                 userDayRelationSet) {
+                if (userDayRelation.getDay().equals(day)){
+                    userDayRelationSetToBeSaved.add(userDayRelation);
                 }
             }
-            day.setWorkDays(workDaySetToBeSaved);
+            day.setUserDayRelations(userDayRelationSetToBeSaved);
             save(day);
         }
     }

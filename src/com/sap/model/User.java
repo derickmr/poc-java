@@ -10,7 +10,6 @@ import java.util.Set;
 @Table(name = "USER")
 public class User {
 
-    //@Column(name = "USER_ID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -27,8 +26,8 @@ public class User {
     @Column(name="SSO_ID", unique=true, nullable=false)
     private String ssoId;
 
-    @OneToMany(mappedBy = "user", targetEntity = WorkDay.class, fetch = FetchType.EAGER)
-    private Set<WorkDay> workDays;
+    @OneToMany(mappedBy = "user", targetEntity = UserDayRelation.class, fetch = FetchType.EAGER)
+    private Set<UserDayRelation> userDayRelations;
 
     public String getUserType() {
         return userType;
@@ -42,12 +41,12 @@ public class User {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    public Set<WorkDay> getWorkDays() {
-        return workDays;
+     public Set<UserDayRelation> getUserDayRelations() {
+        return userDayRelations;
     }
 
-    public void setWorkDays(Set<WorkDay> workDays) {
-        this.workDays = workDays;
+    public void setUserDayRelations(Set<UserDayRelation> userDayRelations) {
+        this.userDayRelations = userDayRelations;
     }
 
     public String getSsoId() {

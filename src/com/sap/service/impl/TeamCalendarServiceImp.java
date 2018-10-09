@@ -5,10 +5,10 @@ import com.sap.dao.TeamCalendarDao;
 import com.sap.model.Day;
 import com.sap.model.Team;
 import com.sap.model.TeamCalendar;
-import com.sap.model.WorkDay;
+import com.sap.model.UserDayRelation;
 import com.sap.service.DayService;
 import com.sap.service.TeamCalendarService;
-import com.sap.service.WorkDayService;
+import com.sap.service.UserDayRelationService;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
     DayService dayService;
 
     @Resource
-    WorkDayService workDayService;
+    UserDayRelationService userDayRelationService;
 
     @Override
     public void save(TeamCalendar calendar) {
@@ -122,7 +122,7 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
 
         save(calendar);
 
-        workDayService.generateWorkDays(calendar);
+        userDayRelationService.generateWorkDays(calendar);
 
     }
 }

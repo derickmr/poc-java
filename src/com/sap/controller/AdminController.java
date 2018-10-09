@@ -3,6 +3,7 @@ package com.sap.controller;
 
 import com.sap.model.User;
 import com.sap.service.UserService;
+import com.sap.service.UserDayRelationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,7 +29,7 @@ public class AdminController {
     private DayService dayService;
 
     @Resource
-    private WorkDayService workDayService;
+    private UserDayRelationService userDayRelationService;
 
     @RequestMapping(value = "/admin")
     public String listUsers (Model model){
@@ -134,7 +135,7 @@ public class AdminController {
 		List<TeamCalendar> teamCalendars;
 
         if ((teamCalendars = new ArrayList<>(currentUser.getTeam().getTeamCalendars())) != null){
-            workDayService.generateWorkDaysForNewUser(user, teamCalendars);
+            userDayRelationService.generateWorkDaysForNewUser(user, teamCalendars);
         }
 
         return "redirect:/admin";
@@ -151,7 +152,7 @@ public class AdminController {
 
         }
 
-        WorkDay workDay = workDayService.getWorkDayById(id);
+        UserDayRelation workDay = workDayService.getWorkDayById(id);
 
         List<String> shiftOptions = new ArrayList<>();
 
@@ -200,7 +201,7 @@ public class AdminController {
 
         model.addAttribute("owner", owner);
         model.addAttribute("day", day);
-        model.addAttribute("workDays", day.getWorkDays());
+        model.addAttribute("workDays", day.getUserDayRelations());
 
         return "showDayDetails";
 
@@ -229,7 +230,7 @@ public class AdminController {
     }
 	
 	 @RequestMapping(value = "/editWorkDay")
-    public String editWorkDay (Model model, WorkDay workDay){
+    public String editWorkDay (Model model, UserDayRelation userDayRelation){
 
         User currentUser = userService.getCurrentUser();
 
@@ -238,13 +239,13 @@ public class AdminController {
             return "accessDenied";
         }
 
-        WorkDay workDayToBeSet = workDayService.getWorkDayById(workDay.getId());
+        UserDayRelation userDayRelationToBeSet = userDayRelationService.getWorkDayById(userDayRelation.getId());
 
-        workDayToBeSet.setShift(workDay.getShift());
+        userDayRelationToBeSet.setShift(userDayRelation.getShift());
 
-        workDayToBeSet.setCanWorkAtHolidayOrWeekend(workDay.isCanWorkAtHolidayOrWeekend());
+        userDayRelationToBeSet.setCanWorkAtHolidayOrWeekend(userDayRelation.isCanWorkAtHolidayOrWeekend());
 
-        workDayService.save(workDayToBeSet);
+        userDayRelationService.save(userDayRelationToBeSet);
 
         return "redirect:/userPage";
     }

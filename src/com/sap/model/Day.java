@@ -47,8 +47,8 @@ public class Day {
     @JoinColumn(name = "DAY_TEAM_CALENDAR")
     private TeamCalendar teamCalendar;
 
-    @OneToMany(mappedBy = "day", targetEntity = WorkDay.class, fetch = FetchType.EAGER)
-    private Set<WorkDay> workDays;
+    @OneToMany(mappedBy = "day", targetEntity = UserDayRelation.class, fetch = FetchType.EAGER)
+    private Set<UserDayRelation> userDayRelations;
 
     public Integer getId() {
         return id;
@@ -90,12 +90,12 @@ public class Day {
         this.teamCalendar = teamCalendar;
     }
 
-    public Set<WorkDay> getWorkDays() {
-        return workDays;
+    public Set<UserDayRelation> getUserDayRelations() {
+        return userDayRelations;
     }
 
-    public void setWorkDays(Set<WorkDay> workDays) {
-        this.workDays = workDays;
+    public void setUserDayRelations(Set<UserDayRelation> userDayRelations) {
+        this.userDayRelations = userDayRelations;
     }
 
     @Override

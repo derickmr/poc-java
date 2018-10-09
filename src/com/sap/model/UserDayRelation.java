@@ -3,8 +3,8 @@ package com.sap.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "WORK_DAY")
-public class WorkDay {
+@Table(name = "USER_DAY_RELATION")   //change entity name
+public class UserDayRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

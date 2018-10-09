@@ -68,7 +68,7 @@ public class MainController {
         User user = userService.getCurrentUser();
 
 		model.addAttribute("user", user);
-		model.addAttribute("workDays", user.getWorkDays());
+		model.addAttribute("workDays", user.getUserDayRelations());
 		
         return "userPage";
 
