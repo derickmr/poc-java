@@ -18,7 +18,12 @@
     </style>
 </head>
 <body class="colorBackground arial">
-<h2 class="centralize">${workDay.day.day} - ${workDay.day.month}</h2>
+<h2 class="centralize">${workDay.day.date}</h2>
+
+<div>
+    <a class="whiteFont" href="/userPage">User home page</a>
+    <br/>
+</div>
 
 <h3>Set your availability</h3>
 

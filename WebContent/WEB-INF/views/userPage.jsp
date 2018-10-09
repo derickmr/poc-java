@@ -39,8 +39,33 @@
                 </tr>
                 <c:forEach items="${workDays}" var="workDay">
                     <tr>
-                        <td>${workDay.day.day} - ${workDay.day.month}</td>
-                        <td>${workDay.shift}</td>
+                        <td>${workDay.day.date}</td>
+                        <%--<td>${workDay.shift}</td>--%>
+
+                        <c:choose>
+                            <c:when test="${workDay.day.holiday}">
+                                <c:if test="${workDay.canWorkAtHolidayOrWeekend}">
+                                    <td>${workDay.shift}</td>
+                                </c:if>
+                                <c:if test="${!workDay.canWorkAtHolidayOrWeekend}">
+                                    <td>Can't work</td>
+                                </c:if>
+                            </c:when>
+                            <c:when test="${workDay.day.weekend}">
+                                <c:if test="${workDay.canWorkAtHolidayOrWeekend}">
+                                    <td>${workDay.shift}</td>
+                                </c:if>
+                                <c:if test="${!workDay.canWorkAtHolidayOrWeekend}">
+                                    <td>Can't work</td>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <td>${workDay.shift}</td>
+                            </c:otherwise>
+
+                        </c:choose>
+
+
                         <td><a href="<c:url value='/workDayDetail/${workDay.id}' />" ><button class="adminButtons">Details</button></a> </td>
                         </tr>
                 </c:forEach>

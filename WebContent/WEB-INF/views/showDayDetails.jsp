@@ -19,7 +19,12 @@
 </head>
 <body class="colorBackground arial">
 
-<h2 class="centralize">${day.day} - ${day.month}</h2>
+<h2 class="centralize">${day.date}</h2>
+
+<div>
+    <a class="whiteFont" href="/calendars">Go back to Team Calendars</a>
+    <br/>
+</div>
 
 <form:form action="/editDay" commandName="day">
     <table>
@@ -37,7 +42,7 @@
         <tr>
             <td>
                 <form:label path="holiday">
-                    <spring:message text="Is it a holiday?"/>
+                    <spring:message text="Check the box if it is a holiday"/>
                 </form:label>
             </td>
             <td>
@@ -47,7 +52,7 @@
         <tr>
             <td>
                 <form:label path="weekend">
-                    <spring:message text="Is it a weekend?"/>
+                    <spring:message text="Check the box if it is a weekend"/>
                 </form:label>
             </td>
             <td>
