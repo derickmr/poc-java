@@ -218,6 +218,12 @@ public class AdminController {
         return "redirect:/calendars";
     }
 	
+	@RequestMapping(value = "/deleteNormalMessage/{id}")
+    public String deleteNormalMessage(@PathVariable("id") Integer id) {
+        messageService.deleteMessageById(id);
+        return "redirect:/calendars";
+    }
+	
 	@RequestMapping(value = "/showDayDetails/{id}")
     public String editCalendar (@PathVariable("id") Integer id, Model model){
 
