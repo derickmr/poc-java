@@ -77,4 +77,22 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         }
         return user;
     }
+	
+	private boolean isThereSpaceOnShift(Day day, String shift) {
+        Integer usersNeeded;
+        Integer usersOnShift;
+
+        if (shift.equals(Shift.DAY.getShift())) {
+            usersNeeded = day.getUsersNeededOnDay();
+            usersOnShift = day.getUsersOnDay();
+        } else {
+            usersNeeded = day.getUsersNeededOnLate();
+            usersOnShift = day.getUsersOnLate();
+        }
+
+        if (usersNeeded - usersOnShift <= 0)
+            return false;
+
+        return true;
+    }
 }
