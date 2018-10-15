@@ -14,6 +14,33 @@ public class TeamCalendar {
 
     private LocalDate startDate;
     private LocalDate endDate;
+	private Integer numberOfUsersOnTeamAtCreationOfTheCalendar;
+	private Integer initialUsersNeededOnDay;
+    private Integer initialUsersNeededOnLate;
+
+    public Integer getInitialUsersNeededOnDay() {
+        return initialUsersNeededOnDay;
+    }
+
+    public void setInitialUsersNeededOnDay(Integer initialUsersNeededOnDay) {
+        this.initialUsersNeededOnDay = initialUsersNeededOnDay;
+    }
+
+    public Integer getInitialUsersNeededOnLate() {
+        return initialUsersNeededOnLate;
+    }
+
+    public void setInitialUsersNeededOnLate(Integer initialUsersNeededOnLate) {
+        this.initialUsersNeededOnLate = initialUsersNeededOnLate;
+    }
+	
+	public Integer getNumberOfUsersOnTeamAtCreationOfTheCalendar() {
+        return numberOfUsersOnTeamAtCreationOfTheCalendar;
+    }
+
+    public void setNumberOfUsersOnTeamAtCreationOfTheCalendar(Integer numberOfUsersOnTeamAtCreationOfTheCalendar) {
+        this.numberOfUsersOnTeamAtCreationOfTheCalendar = numberOfUsersOnTeamAtCreationOfTheCalendar;
+    }
 
     public LocalDate getStartDate() {
         return startDate;
