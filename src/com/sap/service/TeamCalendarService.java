@@ -14,16 +14,13 @@ public interface TeamCalendarService {
 
     List<TeamCalendar> getAllCalendars();
 
-    //boolean verifyDate (TeamCalendar teamCalendar, Team team);
-
     void createCalendar (TeamCalendar calendar);
-
-    //boolean isCalendarDatePossible (TeamCalendar calendar, List<TeamCalendar> teamCalendars);
 
     boolean verifyIfDateIsPossible (TeamCalendar teamCalendar, Team team);
 
     void createNewCalendar (TeamCalendar teamCalendar);
 
+    boolean verifyIfDateMakesPartOfCalendars (LocalDate localDate, List<TeamCalendar> teamCalendars);
 
 
 }
