@@ -25,6 +25,29 @@ public class Team {
 
     @OneToOne
     private User teamOwner;
+	
+	@OneToMany(mappedBy = "team", targetEntity = Message.class, fetch = FetchType.EAGER)
+    private Set<Message> messages;
+
+    @OneToMany(mappedBy = "team", targetEntity = NecessityMessage.class, fetch = FetchType.EAGER)
+    private Set<NecessityMessage> shiftMessages;
+
+    public Set<NecessityMessage> getShiftMessages() {
+        return shiftMessages;
+    }
+
+    public void setShiftMessages(Set<NecessityMessage> shiftMessages) {
+        this.shiftMessages = shiftMessages;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
+
 
     @OneToMany(mappedBy = "team", targetEntity = TeamCalendar.class, fetch = FetchType.EAGER)
     private Set<TeamCalendar> teamCalendars;
