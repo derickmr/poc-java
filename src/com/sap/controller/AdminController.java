@@ -286,5 +286,27 @@ public class AdminController {
         return "redirect:/admin";
 
     }
+	
+	@RequestMapping(value = "/newShiftMessage")
+    public String createShiftMessage(HttpServletRequest request) {
+        LocalDate date = LocalDate.parse(request.getParameter("day-needed"));
+        User currentUser = userService.getCurrentUser();
+        List<TeamCalendar> teamCalendars = new ArrayList<>(currentUser.getTeam().getTeamCalendars());
+        Day day = teamCalendarService.getDayByDate(date, teamCalendars);
+        if (teamCalendarService.verifyIfDateMakesPartOfCalendars(date, teamCalendars)) {
+            NecessityMessage shiftMessage = new NecessityMessage();
+            shiftMessage.setTeam(currentUser.getTeam());
+            shiftMessage.setShift(request.getParameter("shift"));
+            shiftMessage.setDate(date);
+            shiftMessage.setDay(day);
+            if (request.getParameter("shift").equals(Shift.DAY.getShift()))
+                shiftMessage.setUsersOnShiftAtDate(day.getUsersOnDay());
+            else
+                shiftMessage.setUsersOnShiftAtDate(day.getUsersOnLate());
+            shiftMessage.createMessageOfNecessity();
+            necessityMessageService.save(shiftMessage);
+        }
+        return "redirect:/calendars";
+    }
 
 }
