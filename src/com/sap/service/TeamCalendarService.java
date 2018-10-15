@@ -18,7 +18,7 @@ public interface TeamCalendarService {
 
     boolean verifyIfDateIsPossible (TeamCalendar teamCalendar, Team team);
 
-    void createNewCalendar (TeamCalendar teamCalendar);
+    boolean verifyIfShiftsArePossible (TeamCalendar teamCalendar);
 
     boolean verifyIfDateMakesPartOfCalendars (LocalDate localDate, List<TeamCalendar> teamCalendars);
 
