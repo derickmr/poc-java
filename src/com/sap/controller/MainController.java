@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import java.util.Collections;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,7 +74,8 @@ public class MainController {
         List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
         List<NecessityMessage> necessityMessages;
         List<UserDayRelation> userDayRelationsWithMessage = new ArrayList<>();
-        
+		Collections.sort(userDayRelations, new UserDayRelationComparator());
+
 		necessityMessages = necessityMessageService.deleteMessagesWhichWereAttended(shiftMessages);
 		
 		for (UserDayRelation userDayRelation :
