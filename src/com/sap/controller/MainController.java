@@ -26,6 +26,9 @@ public class MainController {
 
     @Resource
     TeamService teamService;
+	
+	@Resource
+    NecessityMessageService necessityMessageService;
 
     @RequestMapping(value = {"/", "/home" }, method = RequestMethod.GET)
     public String homePage(ModelMap model) {
@@ -66,10 +69,29 @@ public class MainController {
     public String userPage (ModelMap model){
 
         User user = userService.getCurrentUser();
-
-		model.addAttribute("user", user);
-		model.addAttribute("workDays", user.getUserDayRelations());
+		List<UserDayRelation> userDayRelations = new ArrayList<>(currentUser.getUserDayRelations());
+        List<Message> normalMessages = teamService.getNormalMessages(currentUser.getTeam());
+        List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
+        List<NecessityMessage> necessityMessages;
+        List<UserDayRelation> userDayRelationsWithMessage = new ArrayList<>();
+        
+		necessityMessages = necessityMessageService.deleteMessagesWhichWereAttended(shiftMessages);
 		
+		for (UserDayRelation userDayRelation :
+                userDayRelations) {
+            for (NecessityMessage necessityMessage :
+                    shiftMessages) {
+                if (userDayRelation.getDay().getDate().isEqual(necessityMessage.getDate()))
+                    userDayRelationsWithMessage.add(userDayRelation);
+            }
+        }
+		
+		model.addAttribute("user", currentUser);
+        model.addAttribute("workDays", userDayRelations);
+        model.addAttribute("normalMessages", normalMessages);
+        model.addAttribute("shiftMessages", necessityMessages);
+        model.addAttribute("userDayRelationsWithMessage", userDayRelationsWithMessage);
+
         return "userPage";
 
     }
