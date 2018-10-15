@@ -4,6 +4,7 @@ public enum Shift {
 
     DAY("Day"),
     LATE("Late"),
+	NONE("None"),
     ANY("Any");
 
     String shift;
