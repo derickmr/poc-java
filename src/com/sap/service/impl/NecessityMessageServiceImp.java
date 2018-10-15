@@ -35,4 +35,29 @@ public class NecessityMessageServiceImp implements NecessityMessageService {
         necessityMessageDao.deleteNecessityMessageById(id);
     }
 
+    @Override
+    public List<NecessityMessage> deleteMessagesWhichWereAttended(List<NecessityMessage> necessityMessages) {
+
+        List<NecessityMessage> necessityMessagesWhichWereNotDeleted = new ArrayList<>();
+
+        for (NecessityMessage necessityMessage :
+                necessityMessages) {
+
+
+            if (necessityMessage.getShift().equals(Shift.DAY.getShift())) {
+                if (necessityMessage.getDay().getUsersOnDay() > necessityMessage.getUsersOnShiftAtDate()) {
+                    deleteNecessityMessageById(necessityMessage.getId());
+                }
+                else
+                    necessityMessagesWhichWereNotDeleted.add(necessityMessage);
+            } else {
+                if (necessityMessage.getDay().getUsersOnLate() > necessityMessage.getUsersOnShiftAtDate()) {
+                    deleteNecessityMessageById(necessityMessage.getId());
+                }
+                else
+                    necessityMessagesWhichWereNotDeleted.add(necessityMessage);
+            }
+        }
+        return necessityMessagesWhichWereNotDeleted;
+    }
 }
