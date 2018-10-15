@@ -184,4 +184,19 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         dayService.save(day);
         save(userDayRelation);
     }
+	
+	@Override
+    public UserDayRelation canUserChangeHisShift(List<UserDayRelation> userDayRelationsOnDay, User user, String wantedShift) {
+
+        for (UserDayRelation userDayRelation :
+                userDayRelationsOnDay) {
+            if (userDayRelation.getShift() != null && !userDayRelation.getUser().equals(user)) {
+                if (userDayRelation.getDesiredOriginalShift().equals(Shift.ANY.getShift()) && userDayRelation.getShift().equals(wantedShift)) {
+                    return userDayRelation;
+                }
+            }
+        }
+        return null;
+
+    }
 }
