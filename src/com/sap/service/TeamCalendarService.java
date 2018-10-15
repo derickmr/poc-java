@@ -22,5 +22,6 @@ public interface TeamCalendarService {
 
     boolean verifyIfDateMakesPartOfCalendars (LocalDate localDate, List<TeamCalendar> teamCalendars);
 
+    Day getDayByDate (LocalDate date, List<TeamCalendar> teamCalendars);
 
 }
