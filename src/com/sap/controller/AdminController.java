@@ -271,5 +271,20 @@ public class AdminController {
 
         return "calendars";
     }
+	
+	@RequestMapping(value = "/newNormalMessage")
+    public String createNewMessageForTheTeam(HttpServletRequest request, Model model) {
+        Message teamMessage = new Message();
+        User currentUser = userService.getCurrentUser();
+        String message = request.getParameter("message");
+
+        teamMessage.setMessage(message);
+        teamMessage.setTeam(currentUser.getTeam());
+
+        messageService.save(teamMessage);
+
+        return "redirect:/admin";
+
+    }
 
 }
