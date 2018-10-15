@@ -21,6 +21,12 @@ public class Day {
 	@OneToMany(mappedBy = "day", targetEntity = NecessityMessage.class, fetch = FetchType.EAGER)
     private Set<NecessityMessage> necessityMessages;
 	
+	private Integer usersNeededOnLate;
+    private Integer usersNeededOnDay;
+
+    private Integer usersOnLate;
+    private Integer usersOnDay;
+	
 	public Set<NecessityMessage> getNecessityMessages() {
         return necessityMessages;
     }
@@ -87,7 +93,37 @@ public class Day {
     public void setUserDayRelations(Set<UserDayRelation> userDayRelations) {
         this.userDayRelations = userDayRelations;
     }
+public Integer getUsersNeededOnLate() {
+        return usersNeededOnLate;
+    }
 
+    public void setUsersNeededOnLate(Integer usersNeededOnLate) {
+        this.usersNeededOnLate = usersNeededOnLate;
+    }
+
+    public Integer getUsersNeededOnDay() {
+        return usersNeededOnDay;
+    }
+
+    public void setUsersNeededOnDay(Integer usersNeededOnDay) {
+        this.usersNeededOnDay = usersNeededOnDay;
+    }
+
+    public Integer getUsersOnLate() {
+        return usersOnLate;
+    }
+
+    public void setUsersOnLate(Integer usersOnLate) {
+        this.usersOnLate = usersOnLate;
+    }
+
+    public Integer getUsersOnDay() {
+        return usersOnDay;
+    }
+
+    public void setUsersOnDay(Integer usersOnDay) {
+        this.usersOnDay = usersOnDay;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
