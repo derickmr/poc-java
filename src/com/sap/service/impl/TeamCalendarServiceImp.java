@@ -99,4 +99,15 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
 
         return true;
     }
+	
+	@Override
+    public boolean verifyIfShiftsArePossible(TeamCalendar teamCalendar) {
+
+        Integer numberOfUsers = teamCalendar.getTeam().getUsers().size() -1;
+
+        if (numberOfUsers.equals(teamCalendar.getInitialUsersNeededOnDay() + teamCalendar.getInitialUsersNeededOnLate()))
+            return true;
+        return false;
+
+    }
 }
