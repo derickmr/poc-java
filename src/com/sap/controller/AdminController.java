@@ -373,9 +373,15 @@ public class AdminController {
 	@RequestMapping(value = "/calendars")
     public String calendars (Model model){
 
-        List<TeamCalendar> teamCalendars = new ArrayList<>(userService.getCurrentUser().getTeam().getTeamCalendars());
-        model.addAttribute("teamCalendar", new TeamCalendar());
+         User currentUser = userService.getCurrentUser();
 
+        List<TeamCalendar> teamCalendars = new ArrayList<>(userService.getCurrentUser().getTeam().getTeamCalendars());
+        List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
+        List<NecessityMessage> necessityMessages = necessityMessageService.deleteMessagesWhichWereAttended(shiftMessages);
+        Collections.sort(teamCalendars, new TeamCalendarComparator());
+
+        model.addAttribute("calendars", teamCalendars);
+        model.addAttribute("shiftMessages", necessityMessages);
 
         return "calendars";
     }
