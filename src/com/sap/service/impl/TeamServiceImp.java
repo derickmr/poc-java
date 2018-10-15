@@ -28,4 +28,16 @@ public class TeamServiceImp implements TeamService {
     public Team getTeamByName (String name){
         return teamDao.getTeamByName(name);
     }
+	
+	@Override
+    public List<Message> getNormalMessages(Team team) {
+        List<Message> messages = new ArrayList<>(team.getMessages());
+        return messages;
+    }
+
+    @Override
+    public List<NecessityMessage> getNecessityMessages(Team team) {
+        List<NecessityMessage> messages = new ArrayList<>(team.getShiftMessages());
+        return messages;
+    }
 }
