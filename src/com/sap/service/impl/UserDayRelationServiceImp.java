@@ -118,4 +118,43 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
             save(userDayRelation);
         }
     }
+	
+	@Override
+    public void changeShift(UserDayRelation userDayRelation, String shift) {
+        Day day = userDayRelation.getDay();
+        List<UserDayRelation> userDayRelationsOnDay = new ArrayList<>(day.getUserDayRelations());
+
+        if (userDayRelation.getDesiredOriginalShift().equals(Shift.ANY.getShift())) {
+
+
+            if (isThereSpaceOnShift(day, Shift.DAY.getShift())) {
+                if (!userDayRelation.getShift().equals(Shift.NONE.getShift()))
+                    removeShift(userDayRelation);
+                setShift(userDayRelation, Shift.DAY.getShift());
+            } else if (isThereSpaceOnShift(day, Shift.LATE.getShift())) {
+                if (!userDayRelation.getShift().equals(Shift.NONE.getShift()))
+                    removeShift(userDayRelation);
+                setShift(userDayRelation, Shift.LATE.getShift());
+            }
+
+
+            save(userDayRelation);
+        } else {
+
+            if (isThereSpaceOnShift(day, userDayRelation.getDesiredOriginalShift())) {
+                if (!userDayRelation.getShift().equals(Shift.NONE.getShift()))
+                    removeShift(userDayRelation);
+                setShift(userDayRelation, shift);
+            } else {
+                UserDayRelation userDayRelationToChange;
+                if ((userDayRelationToChange = canUserChangeHisShift(userDayRelationsOnDay, userDayRelation.getUser(), shift)) != null) {
+
+                    changeShitsOfDays(userDayRelation, userDayRelationToChange);
+
+                }
+            }
+
+        }
+
+    }
 }
