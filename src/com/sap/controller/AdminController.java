@@ -289,6 +289,31 @@ public class AdminController {
     }
 	
 	@RequestMapping(value = "/editDay")
+    public String editDay(Day day, Model model) {
+
+        User currentUser = userService.getCurrentUser();
+
+        if (!userService.isTeamOwner(currentUser)) {
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+
+        Day dayToBeSet = dayService.getDayByID(day.getId());
+
+        dayToBeSet.setHoliday(day.isHoliday());
+        dayToBeSet.setWeekend(day.isWeekend());
+
+        if (day.isWeekend() || day.isHoliday()){
+            userDayRelationService.removeShiftsOfHolidayOrWeekend(new ArrayList<>(dayToBeSet.getUserDayRelations()));
+        }
+
+        dayService.save(dayToBeSet);
+
+        return "redirect:/calendars";
+
+    }
+	
+	@RequestMapping(value = "/editDay")
     public String editDay (Day day, Model model){
 
         User currentUser = userService.getCurrentUser();
