@@ -21,5 +21,8 @@ public interface UserDayRelationService {
     User generateWorkDaysForNewUser (User user, List<TeamCalendar> teamCalendars);
 	
 	UserDayRelation canUserChangeHisShift(List<UserDayRelation> userDayRelationsOnDay, User user, String wantedShift);
+	
+	void changeShift(UserDayRelation userDayRelation, String shift);
 
+	
 }
