@@ -50,7 +50,8 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
             for (User user :
                     teamCalendar.getTeam().getUsers()) {
                 userDayRelation = new UserDayRelation();
-                userDayRelation.setShift(Shift.ANY.getShift());
+                userDayRelation.setShift(Shift.NONE.getShift());
+				userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
                 userDayRelation.setDay(day);
                 userDayRelation.setUser(user);
                 save(userDayRelation);
