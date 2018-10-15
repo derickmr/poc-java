@@ -116,8 +116,10 @@ public class AdminController {
 
             User registeredUser = userService.getUserByID(user.getId());
 
-            if (userService.getUserBySsoId(user.getSsoId())!=null){
-                if (userService.getUserBySsoId(user.getSsoId()).getId() != registeredUser.getId()){
+            if (userService.getUserBySsoId(user.getSsoId()) != null) {
+                Integer userId = userService.getUserBySsoId(user.getSsoId()).getId();
+                Integer registeredUserId = registeredUser.getId();
+                if (!registeredUserId.equals(userId)) {
                     model.addAttribute("goBack", "admin");
                     return "userAlreadyExists";
 
