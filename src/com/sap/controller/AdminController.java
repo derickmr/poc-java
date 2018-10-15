@@ -224,6 +224,12 @@ public class AdminController {
         return "redirect:/calendars";
     }
 	
+	@RequestMapping(value = "/deleteShiftMessage/{id}")
+    public String deleteShiftMessage(@PathVariable("id") Integer id) {
+        necessityMessageService.deleteNecessityMessageById(id);
+        return "redirect:/calendars";
+    }
+	
 	@RequestMapping(value = "/showDayDetails/{id}")
     public String editCalendar (@PathVariable("id") Integer id, Model model){
 
