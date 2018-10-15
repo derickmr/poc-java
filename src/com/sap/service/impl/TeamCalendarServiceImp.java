@@ -123,4 +123,17 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
         }
         return false;
     }
+	
+	@Override
+    public Day getDayByDate(LocalDate date, List<TeamCalendar> teamCalendars) {
+        for (TeamCalendar teamCalendar :
+                teamCalendars) {
+            for (Day day :
+                    teamCalendar.getDays()) {
+                if (day.getDate().isEqual(date))
+                    return day;
+            }
+        }
+        return null;
+    }
 }
