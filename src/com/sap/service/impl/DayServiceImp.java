@@ -62,9 +62,13 @@ public class DayServiceImp implements DayService {
         Day day;
 
         while (!localDateIterator.isAfter(endDate)){
-            day = new Day();
+           day = new Day();
             day.setDate(localDateIterator);
             day.setTeamCalendar(teamCalendar);
+            day.setUsersNeededOnDay(teamCalendar.getInitialUsersNeededOnDay());
+            day.setUsersNeededOnLate(teamCalendar.getInitialUsersNeededOnLate());
+            day.setUsersOnLate(0);
+            day.setUsersOnDay(0);
             save(day);
             days.add(day);
             localDateIterator = localDateIterator.plusDays(1);
