@@ -177,7 +177,7 @@ public class AdminController {
     }
 	
 	@RequestMapping(value = "/newCalendar")
-    public String saveCalendar (HttpServletRequest request, Model model){
+    public String saveCalendar(HttpServletRequest request, Model model) {
 
         User currentUser = userService.getCurrentUser();
         LocalDate startDate = LocalDate.parse(request.getParameter("start-date"));
@@ -185,15 +185,34 @@ public class AdminController {
         TeamCalendar teamCalendar = new TeamCalendar();
         teamCalendar.setStartDate(startDate);
         teamCalendar.setEndDate(endDate);
+        teamCalendar.setTeam(currentUser.getTeam());
+        teamCalendar.setNumberOfUsersOnTeamAtCreationOfTheCalendar(currentUser.getTeam().getUsers().size() - 1);
 
-        if (!userService.isTeamOwner(currentUser)){
+        String usersNeededOnDay = request.getParameter("usersDay");
+        String usersNeededOnLate = request.getParameter("usersLate");
+
+        if (usersNeededOnDay.equals(""))
+            teamCalendar.setInitialUsersNeededOnDay(0);
+        else
+            teamCalendar.setInitialUsersNeededOnDay(Integer.parseInt(usersNeededOnDay));
+
+        if (usersNeededOnLate.equals(""))
+            teamCalendar.setInitialUsersNeededOnLate(0);
+        else
+            teamCalendar.setInitialUsersNeededOnLate(Integer.parseInt(usersNeededOnLate));
+
+
+        if (!userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
 
-        if (teamCalendarService.verifyIfDateIsPossible (teamCalendar, currentUser.getTeam())) {
-            teamCalendar.setTeam(currentUser.getTeam());
-            teamCalendarService.createCalendar(teamCalendar);
+        if (teamCalendarService.verifyIfShiftsArePossible(teamCalendar)) {
+
+            if (teamCalendarService.verifyIfDateIsPossible(teamCalendar, currentUser.getTeam())) {
+                teamCalendarService.createCalendar(teamCalendar);
+            }
+
         }
 
         return "redirect:/calendars";
