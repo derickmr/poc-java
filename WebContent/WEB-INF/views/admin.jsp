@@ -28,6 +28,10 @@
 <body class="arial colorBackground">
 
 <div>
+<a href="calendars">Administrate team calendars</a>
+</div>
+
+<div>
     <h1 class="centralize">
         Welcome ${admin.ssoId}! <a href="<c:url value="/logout" />" > <button class="adminButtons"><i class="fa fa-sign-out"> Logout </i></button></a>
     </h1>
@@ -88,29 +92,51 @@
         </tr>
     </table>
 </form:form>
-<br>
+<br/>
+<form action="/newNormalMessage">
+    <label for="message">Send a message to your team!</label>
+    <input type="text" class="form-control" id="message" name="message">
+
+    <br/>
+    <br/>
+
+    <button type="submit" class="adminButtons">Send message</button>
+
+</form>
 <h3 class="centralize">Users list</h3>
 <c:if test="${!empty users}">
     <table id = "users" class="centralize">
         <tr>
             <th width="80">User ID</th>
             <th width="120">User SSO ID</th>
-            <%--<th width="120">User Encrypted Password</th>--%>
             <th width="60">Edit</th>
-            <th width="60">Delete</th
+            <th width="60">Delete</th>
         </tr>
         <c:forEach items="${users}" var="user">
             <tr>
                 <td>${user.id}</td>
                 <td>${user.ssoId}</td>
-                <%--<td>${user.password}</td>--%>
                 <td><a href="<c:url value='/edit/${user.id}' />" ><button class="adminButtons">Edit</button></a> </td>
                 <td><a href="<c:url value='/remove/${user.id}' />" ><button class="adminButtons">Delete</button></a></td>
             </tr>
         </c:forEach>
     </table>
 </c:if>
-<%--<button class="adminButtons"><i class="fa fa-sign-out"><a href="<c:url value="/logout" />" > Logout</a></i></button>--%>
-<a href="calendars">Administrate team calendars</a>
+<br/>
+<h3 class="centralize">Messages sent</h3>
+<c:if test="${!empty normalMessages}">
+    <table id = "normalMessages" class="centralize">
+        <tr>
+            <th width="450"></th>
+            <th width="40"></th>
+        </tr>
+        <c:forEach items="${normalMessages}" var="normalMessage">
+            <tr>
+                <td align="center">${normalMessage}</td>
+                <td><a href="<c:url value='/deleteNormalMessage/${normalMessage.id}' />" ><button class="adminButtons">Delete</button></a></td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 </body>
 </html>
