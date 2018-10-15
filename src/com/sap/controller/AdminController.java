@@ -313,6 +313,7 @@ public class AdminController {
 
     }
 	
+	
 	@RequestMapping(value = "/editDay")
     public String editDay (Day day, Model model){
 
@@ -336,21 +337,34 @@ public class AdminController {
     }
 	
 	 @RequestMapping(value = "/editWorkDay")
-    public String editWorkDay (Model model, UserDayRelation userDayRelation){
+    public String editWorkDay(Model model, UserDayRelation userDayRelation) {
 
         User currentUser = userService.getCurrentUser();
 
-        if (userService.isTeamOwner(currentUser)){
+        if (userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
 
         UserDayRelation userDayRelationToBeSet = userDayRelationService.getWorkDayById(userDayRelation.getId());
-
-        userDayRelationToBeSet.setShift(userDayRelation.getShift());
-
+        userDayRelationToBeSet.setDesiredOriginalShift(userDayRelation.getShift());
         userDayRelationToBeSet.setCanWorkAtHolidayOrWeekend(userDayRelation.isCanWorkAtHolidayOrWeekend());
 
+        if (userDayRelationToBeSet.getDay().isWeekend() || userDayRelationToBeSet.getDay().isHoliday()){
+            if (userDayRelationToBeSet.isCanWorkAtHolidayOrWeekend()){
+                if (userDayRelationToBeSet.getDesiredOriginalShift().equals(userDayRelationToBeSet.getShift())) {
+                    userDayRelationService.save(userDayRelationToBeSet);
+                } else
+                    userDayRelationService.changeShift(userDayRelationToBeSet, userDayRelationToBeSet.getDesiredOriginalShift());
+            }
+        }
+
+        else {
+            if (userDayRelationToBeSet.getDesiredOriginalShift().equals(userDayRelationToBeSet.getShift())) {
+                userDayRelationService.save(userDayRelationToBeSet);
+            } else
+                userDayRelationService.changeShift(userDayRelationToBeSet, userDayRelationToBeSet.getDesiredOriginalShift());
+        }
         userDayRelationService.save(userDayRelationToBeSet);
 
         return "redirect:/userPage";
