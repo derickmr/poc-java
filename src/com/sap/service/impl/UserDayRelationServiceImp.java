@@ -107,4 +107,15 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         dayService.save(day);
 
     }
+	
+	@Override
+    public void removeShiftsOfHolidayOrWeekend (List<UserDayRelation> userDayRelations){
+        for (UserDayRelation userDayRelation :
+                userDayRelations) {
+            removeShift(userDayRelation);
+            userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
+            userDayRelation.setShift(Shift.NONE.getShift());
+            save(userDayRelation);
+        }
+    }
 }
