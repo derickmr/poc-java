@@ -10,6 +10,8 @@ public class UserDayRelation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
+	private String desiredOriginalShift;
+
     public Integer getId() {
         return id;
     }
@@ -18,6 +20,14 @@ public class UserDayRelation {
         this.id = id;
     }
 
+	public String getDesiredOriginalShift() {
+        return desiredOriginalShift;
+    }
+
+    public void setDesiredOriginalShift(String desiredOriginalShift) {
+        this.desiredOriginalShift = desiredOriginalShift;
+    }
+	
     public Day getDay() {
         return day;
     }
