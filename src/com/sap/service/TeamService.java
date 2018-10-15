@@ -9,5 +9,10 @@ public interface TeamService {
     Team getTeamByID(Integer id);
 
     Team getTeamByName (String name);
+	
+	List<Message> getNormalMessages(Team team);
+
+    List<NecessityMessage> getNecessityMessages(Team team);
+
 
 }
