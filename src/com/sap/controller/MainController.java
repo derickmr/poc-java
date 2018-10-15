@@ -121,8 +121,6 @@ public class MainController {
     @RequestMapping(value = "/showAll")
     public String showAll (ModelMap model){
 
-        //String ssoId = userService.getPrincipal();
-
         User userAdmin = userService.getCurrentUser();
 
         List<User> users = userService.getTeamMates(userAdmin);
