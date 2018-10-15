@@ -24,5 +24,5 @@ public interface UserDayRelationService {
 	
 	void changeShift(UserDayRelation userDayRelation, String shift);
 
-	
+	void removeShiftsOfHolidayOrWeekend(List<UserDayRelation> userDayRelations);
 }
