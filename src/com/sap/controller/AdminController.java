@@ -1,6 +1,5 @@
 package com.sap.controller;
 
-
 import com.sap.model.User;
 import com.sap.service.UserService;
 import com.sap.service.UserDayRelationService;
@@ -30,15 +29,27 @@ public class AdminController {
 
     @Resource
     private UserDayRelationService userDayRelationService;
+	
+	@Resource
+    private MessageService messageService;
+
+    @Resource
+    private TeamService teamService;
+
+    @Resource
+    private NecessityMessageService necessityMessageService;
 
     @RequestMapping(value = "/admin")
     public String listUsers (Model model){
 
         User admin = userService.getCurrentUser();
+        List<Message> normalMessages = teamService.getNormalMessages(admin.getTeam());
 
         model.addAttribute("user", new User());
         model.addAttribute("users", userService.getTeamMates(admin));
         model.addAttribute("admin", admin);
+		model.addAttribute("normalMessages", normalMessages);
+
         return "admin";
     }
 
