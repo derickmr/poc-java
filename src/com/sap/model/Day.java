@@ -18,6 +18,17 @@ public class Day {
     @Column(name = "DATE_OF_DAY")
     private LocalDate date;
 
+	@OneToMany(mappedBy = "day", targetEntity = NecessityMessage.class, fetch = FetchType.EAGER)
+    private Set<NecessityMessage> necessityMessages;
+	
+	public Set<NecessityMessage> getNecessityMessages() {
+        return necessityMessages;
+    }
+
+    public void setNecessityMessages(Set<NecessityMessage> necessityMessages) {
+        this.necessityMessages = necessityMessages;
+    }
+	
     public LocalDate getDate() {
         return date;
     }
