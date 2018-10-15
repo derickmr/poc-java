@@ -110,4 +110,17 @@ public class TeamCalendarServiceImp implements TeamCalendarService {
         return false;
 
     }
+	
+	@Override
+    public boolean verifyIfDateMakesPartOfCalendars(LocalDate localDate, List<TeamCalendar> teamCalendars) {
+        for (TeamCalendar teamCalendar :
+                teamCalendars) {
+            for (Day day :
+                    teamCalendar.getDays()) {
+                if (day.getDate().isEqual(localDate))
+                    return true;
+            }
+        }
+        return false;
+    }
 }
