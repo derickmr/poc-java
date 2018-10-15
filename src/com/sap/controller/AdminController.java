@@ -250,6 +250,44 @@ public class AdminController {
 
     }
 	
+	@RequestMapping(value = "/editDayShift")
+    public String editDayShift(Day day, HttpServletRequest request) {
+
+        Integer usersOnDay;
+        Integer usersOnLate;
+        String usersOnDayString = request.getParameter("usersDay");
+        String usersOnLateString = request.getParameter("usersLate");
+        Day dayToBeEdited = dayService.getDayByID(day.getId());
+
+        if (usersOnDayString.equals(""))
+            usersOnDay = 0;
+        else
+            usersOnDay = Integer.parseInt(usersOnDayString);
+
+        if (usersOnLateString.equals(""))
+            usersOnLate = 0;
+        else
+            usersOnLate = Integer.parseInt(usersOnLateString);
+
+        if (dayToBeEdited.isHoliday() || dayToBeEdited.isWeekend()){
+            int result = (dayToBeEdited.getTeamCalendar().getNumberOfUsersOnTeamAtCreationOfTheCalendar().compareTo(usersOnDay + usersOnLate));
+            if (result >= 0){
+                dayToBeEdited.setUsersNeededOnDay(usersOnDay);
+                dayToBeEdited.setUsersNeededOnLate(usersOnLate);
+                dayService.save(dayToBeEdited);
+            }
+
+        }
+        else {
+            if (dayToBeEdited.getTeamCalendar().getNumberOfUsersOnTeamAtCreationOfTheCalendar().equals(usersOnDay + usersOnLate)) {
+                dayToBeEdited.setUsersNeededOnDay(usersOnDay);
+                dayToBeEdited.setUsersNeededOnLate(usersOnLate);
+                dayService.save(dayToBeEdited);
+            }
+        }
+        return "redirect:/calendars";
+    }
+	
 	@RequestMapping(value = "/editDay")
     public String editDay (Day day, Model model){
 
