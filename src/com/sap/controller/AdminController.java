@@ -72,17 +72,16 @@ public class AdminController {
     }
 
     @RequestMapping(value = "remove/{id}")
-    public String removeUser (@PathVariable("id") Integer id, Model model){
-
+    public String removeUser(@PathVariable("id") Integer id, Model model) {
+        User user = userService.getUserByID(id);
+        List<UserDayRelation> userDayRelations;
         if (!userService.verifyIfActionCanBeAppliedToUser(userService.getUserByID(id))) {
             model.addAttribute("user", userService.getCurrentUser());
             return "accessDenied";
         }
-
-
+        userDayRelations = new ArrayList<>(user.getUserDayRelations());
+        userDayRelationService.deleteUserDayRelationsFromUser(userDayRelations);
         userService.deleteUserByID(id);
-
-
         return "redirect:/admin";
     }
 
