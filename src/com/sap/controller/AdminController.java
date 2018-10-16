@@ -259,6 +259,7 @@ public class AdminController {
         String usersOnDayString = request.getParameter("usersDay");
         String usersOnLateString = request.getParameter("usersLate");
         Day dayToBeEdited = dayService.getDayByID(day.getId());
+        Integer totalNumberOfUsersNeededOnShiftsAtDay = dayToBeEdited.getUsersNeededOnDay() + dayToBeEdited.getUsersNeededOnLate();
 
         if (usersOnDayString.equals(""))
             usersOnDay = 0;
@@ -271,7 +272,7 @@ public class AdminController {
             usersOnLate = Integer.parseInt(usersOnLateString);
 
         if (dayToBeEdited.isHoliday() || dayToBeEdited.isWeekend()){
-            int result = (dayToBeEdited.getTeamCalendar().getNumberOfUsersOnTeamAtCreationOfTheCalendar().compareTo(usersOnDay + usersOnLate));
+            int result = (totalNumberOfUsersNeededOnShiftsAtDay.compareTo(usersOnDay + usersOnLate));
             if (result >= 0){
                 dayToBeEdited.setUsersNeededOnDay(usersOnDay);
                 dayToBeEdited.setUsersNeededOnLate(usersOnLate);
@@ -280,7 +281,7 @@ public class AdminController {
 
         }
         else {
-            if (dayToBeEdited.getTeamCalendar().getNumberOfUsersOnTeamAtCreationOfTheCalendar().equals(usersOnDay + usersOnLate)) {
+            if (totalNumberOfUsersNeededOnShiftsAtDay.equals(usersOnDay + usersOnLate)) {
                 dayToBeEdited.setUsersNeededOnDay(usersOnDay);
                 dayToBeEdited.setUsersNeededOnLate(usersOnLate);
                 dayService.save(dayToBeEdited);
