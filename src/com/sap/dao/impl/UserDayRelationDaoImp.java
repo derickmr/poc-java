@@ -40,4 +40,11 @@ public class UserDayRelationDaoImp extends HibernateDaoSupport implements UserDa
         return userDayRelationSet;
 
     }
+	
+	@Override
+    @Transactional(readOnly = false)
+    public void deleteUserDayRelationById(Integer id) {
+        UserDayRelation userDayRelation = getWorkDayById(id);
+        getHibernateTemplate().delete(userDayRelation);
+    }
 }
