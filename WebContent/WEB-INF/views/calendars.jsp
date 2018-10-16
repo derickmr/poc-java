@@ -16,9 +16,14 @@
     <style>
         <%@include file="/WEB-INF/resources/login_style.css"%>
     </style>
+    <%--<script src="/WEB-INF/resources/main.js"></script>--%>
 </head>
 <body class="arial colorBackground">
-
+<script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="<c:url value="/WEB-INF/resources/main.js" />"></script>
 <div>
 <a class="whiteFont" href="/admin">Administrate users</a>
 <br/>
@@ -38,13 +43,13 @@
     <br/>
 
     <label for="usersDay">Users needed on day shift</label>
-    <input type="text" class="form-control" id="usersDay" name="usersDay">
+    <input type="number" class="form-control" id="usersDay" name="usersDay" value="0" min="0" required>
 
     <br/>
 
     <label for="usersLate">Users needed on late shift</label>
-    <input type="text" class="form-control" id="usersLate" name="usersLate">
-
+    <input type="number" class="form-control" id="usersLate" name="usersLate" value="0" required>
+    <br/>
     <button type="submit" class="adminButtons">Create calendar</button>
 
 </form>
@@ -68,17 +73,6 @@
     <button type="submit" class="adminButtons">Send shift necessity</button>
 
 </form>
-
-<%--<form action="/newNormalMessage">--%>
-    <%--<label for="message">Send a message to your team!</label>--%>
-    <%--<input type="text" class="form-control" id="message" name="message">--%>
-
-    <%--<br/>--%>
-    <%--<br/>--%>
-
-    <%--<button type="submit" class="adminButtons">Send message</button>--%>
-
-<%--</form>--%>
 
 <table id = "calendars" class="centralize">
     <tr>
@@ -124,10 +118,9 @@
         </tr>
 
     <c:forEach items="${shiftMessages}" var="shiftMessage">
-        <%--<p>${shiftMessage}</p>--%>
         <tr>
-            <td>${shiftMessage}</td>
-            <td><a href="<c:url value='/deleteShiftMessage/${shiftMessage.id}' />" ><button class="adminButtons">Delete</button></a></td>
+            <td align="center">${shiftMessage}</td>
+            <td align="center"><a href="<c:url value='/deleteShiftMessage/${shiftMessage.id}' />" ><button class="adminButtons">Delete</button></a></td>
         </tr>
     </c:forEach>
 
@@ -135,20 +128,5 @@
 
 </c:if>
 
-<%--<c:if test="${!empty normalMessages}">--%>
-    <%--<table id = "normalMessages" class="centralize">--%>
-        <%--<tr>--%>
-            <%--<th width="550">Message</th>--%>
-            <%--<th width="40">Delete</th>--%>
-        <%--</tr>--%>
-    <%--<c:forEach items="${normalMessages}" var="normalMessage">--%>
-        <%--&lt;%&ndash;<p>${normalMessage}</p>&ndash;%&gt;--%>
-        <%--<tr>--%>
-            <%--<td>${normalMessage}</td>--%>
-            <%--<td><a href="<c:url value='/deleteNormalMessage/${normalMessage.id}' />" ><button class="adminButtons">Delete</button></a></td>--%>
-        <%--</tr>--%>
-    <%--</c:forEach>--%>
-    <%--</table>--%>
-<%--</c:if>--%>
 </body>
 </html>

@@ -87,13 +87,13 @@
         <tr>
             <td>
                 <label for="usersDay">Users needed on day shift</label>
-                <input type="text" class="form-control" id="usersDay" name="usersDay">
+                <input type="number" class="form-control" id="usersDay" name="usersDay" min="0" value="0" required>
             </td>
         </tr>
         <tr>
             <td>
                 <label for="usersLate">Users needed on late shift</label>
-                <input type="text" class="form-control" id="usersLate" name="usersLate">
+                <input type="number" class="form-control" id="usersLate" name="usersLate" min="0" value="0" required>
             </td>
         </tr>
         <tr>
