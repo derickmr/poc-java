@@ -67,18 +67,20 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         for (TeamCalendar teamCalendar :
                 teamCalendars) {
             for (Day day :
-                    teamCalendar.getDays()) {
-                userDayRelation = new UserDayRelation();
-				userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
-                userDayRelation.setShift(Shift.NONE.getShift());
-				if (Math.random() <= .5)
+                teamCalendar.getDays()) {
+                if (!day.getDate().isBefore(LocalDate.now())) {
+                    userDayRelation = new UserDayRelation();
+                    userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
+                    userDayRelation.setShift(Shift.NONE.getShift());
+                    if (Math.random() <= .5)
                         day.setUsersNeededOnDay(day.getUsersNeededOnDay()+1);
-                else
-					day.setUsersNeededOnLate(day.getUsersNeededOnLate()+1);
-                userDayRelation.setDay(day);
-                userDayRelation.setUser(user);
-				dayService.save(day);
-                save(userDayRelation);
+                    else
+                        day.setUsersNeededOnLate(day.getUsersNeededOnLate()+1);
+                    userDayRelation.setDay(day);
+                    userDayRelation.setUser(user);
+                    dayService.save(day);
+                    save(userDayRelation);
+                }
             }
         }
         return user;
