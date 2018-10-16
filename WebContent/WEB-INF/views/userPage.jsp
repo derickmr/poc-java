@@ -34,45 +34,95 @@
             <table id = "workDays" class="centralize">
                 <tr>
                     <th width="80">Day</th>
-                    <th width="120">Shift</th>
+                    <th width="140">Shift</th>
+                    <th width="60">Users on day</th>
+                    <th width="60">Users on late</th>
                     <th width="60">Details</th>
+
+
                 </tr>
                 <c:forEach items="${workDays}" var="workDay">
                     <tr>
-                        <td>${workDay.day.date}</td>
-                        <%--<td>${workDay.shift}</td>--%>
-
+                        <td align="center">${workDay.day.date}</td>
                         <c:choose>
-                            <c:when test="${workDay.day.holiday}">
+                            <c:when test="${workDay.day.holiday or workDay.day.weekend}">
                                 <c:if test="${workDay.canWorkAtHolidayOrWeekend}">
-                                    <td>${workDay.shift}</td>
+                                    <c:if test="${!empty workDay.shift}">
+                                    <td align="center">${workDay.shift}</td>
+                                    </c:if>
+                                    <c:if test="${empty workDay.shift}">
+                                        <td align="center">${workDay.desiredOriginalShift}</td>
+                                    </c:if>
                                 </c:if>
                                 <c:if test="${!workDay.canWorkAtHolidayOrWeekend}">
-                                    <td>Can't work</td>
+                                    <td align="center">Can't work</td>
                                 </c:if>
                             </c:when>
                             <c:when test="${workDay.day.weekend}">
                                 <c:if test="${workDay.canWorkAtHolidayOrWeekend}">
-                                    <td>${workDay.shift}</td>
+                                    <c:if test="${!empty workDay.shift}">
+                                    <td align="center">${workDay.shift}</td>
+                                    </c:if>
+                                    <c:if test="${empty workDay.shift}">
+                                        <td align="center">${workDay.desiredOriginalShift}</td>
+                                    </c:if>
                                 </c:if>
                                 <c:if test="${!workDay.canWorkAtHolidayOrWeekend}">
-                                    <td>Can't work</td>
+                                    <td align="center">Can't work</td>
                                 </c:if>
                             </c:when>
                             <c:otherwise>
-                                <td>${workDay.shift}</td>
+                                <c:if test="${!empty workDay.shift}">
+                                <td align="center">${workDay.shift}</td>
+                                </c:if>
+                                <c:if test="${empty workDay.shift}">
+                                    <td align="center">${workDay.desiredOriginalShift}</td>
+                                </c:if>
                             </c:otherwise>
 
                         </c:choose>
 
-
+                        <td align="center">${workDay.day.usersOnDay}/${workDay.day.usersNeededOnDay}</td>
+                        <td align="center">${workDay.day.usersOnLate}/${workDay.day.usersNeededOnLate}</td>
                         <td><a href="<c:url value='/workDayDetail/${workDay.id}' />" ><button class="adminButtons">Details</button></a> </td>
                         </tr>
                 </c:forEach>
             </table>
         </c:if>
 
-<%--</div>--%>
+<c:if test="${!empty shiftMessages}">
 
+    <table id="shiftMessages" class="centralize">
+
+        <tr>
+            <th width="450">Shift Messages</th>
+            </tr>
+
+        <c:forEach items="${shiftMessages}" var="shiftMessage">
+            <tr>
+                <c:forEach items="${userDayRelationsWithMessage}" var="userDayRelationWithMessage">
+                    <c:if test="${shiftMessage.date.isEqual(userDayRelationWithMessage.day.date)}">
+                        <td align="center"><a href="<c:url value="/workDayDetail/${userDayRelationWithMessage.id}"/>">${shiftMessage}</a></td>
+                    </c:if>
+                </c:forEach>
+            </tr>
+        </c:forEach>
+
+    </table>
+
+</c:if>
+
+<c:if test="${!empty normalMessages}">
+    <table id = "normalMessages" class="centralize">
+        <tr>
+            <th width="550">Message</th>
+        </tr>
+        <c:forEach items="${normalMessages}" var="normalMessage">
+            <tr>
+                <td align="center">${normalMessage}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 </body>
 </html>
