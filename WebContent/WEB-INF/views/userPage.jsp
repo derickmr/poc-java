@@ -115,7 +115,7 @@
 <c:if test="${!empty normalMessages}">
     <table id = "normalMessages" class="centralize">
         <tr>
-            <th width="550">Message</th>
+            <th width="550">Messages</th>
         </tr>
         <c:forEach items="${normalMessages}" var="normalMessage">
             <tr>
