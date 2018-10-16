@@ -371,7 +371,7 @@ public class AdminController {
                 userDayRelationService.changeShift(userDayRelationToBeSet, userDayRelationToBeSet.getDesiredOriginalShift());
         }
         userDayRelationService.save(userDayRelationToBeSet);
-
+        userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
         return "redirect:/userPage";
     }
 	
