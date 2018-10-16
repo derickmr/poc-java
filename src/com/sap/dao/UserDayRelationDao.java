@@ -14,5 +14,8 @@ public interface UserDayRelationDao {
     UserDayRelation getWorkDayById (Integer id);
 
     Set<UserDayRelation> getAllWorkDays ();
+	
+	void deleteUserDayRelationById (Integer id);
+
 
 }
