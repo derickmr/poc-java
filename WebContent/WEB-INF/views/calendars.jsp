@@ -48,7 +48,7 @@
     <br/>
 
     <label for="usersLate">Users needed on late shift</label>
-    <input type="number" class="form-control" id="usersLate" name="usersLate" value="0" required>
+    <input type="number" class="form-control" id="usersLate" name="usersLate" value="0" min="0" required>
     <br/>
     <button type="submit" class="adminButtons">Create calendar</button>
 
