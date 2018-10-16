@@ -254,13 +254,32 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
             }
         }
         else {
-            if (day.getUsersNeededOnDay()>0){
-                day.setUsersNeededOnDay(day.getUsersNeededOnDay()-1);
-                dayService.save(day);
-            }
-            else if (day.getUsersNeededOnLate()>0){
-                day.setUsersNeededOnLate(day.getUsersNeededOnLate()-1);
-                dayService.save(day);
+            if (day.getUsersNeededOnDay() > 0) {
+                if (day.isWeekend() || day.isHoliday()){
+
+                    Integer numberOfMembersOnTeam = (new ArrayList<>(day.getUserDayRelations())).size()-1;
+                    if (numberOfMembersOnTeam.equals(day.getUsersNeededOnDay() + day.getUsersNeededOnLate())) {
+                        day.setUsersNeededOnDay(day.getUsersNeededOnDay() - 1);
+                        dayService.save(day);
+                    }
+                }
+                else {
+                    day.setUsersNeededOnDay(day.getUsersNeededOnDay() - 1);
+                    dayService.save(day);
+                }
+            } else if (day.getUsersNeededOnLate() > 0) {
+                if (day.isWeekend() || day.isHoliday()){
+
+                    Integer numberOfMembersOnTeam = (new ArrayList<>(day.getUserDayRelations())).size()-1;
+                    if (numberOfMembersOnTeam.equals(day.getUsersNeededOnDay() + day.getUsersNeededOnLate())) {
+                        day.setUsersNeededOnLate(day.getUsersNeededOnLate() - 1);
+                        dayService.save(day);
+                    }
+                }
+                else {
+                    day.setUsersNeededOnLate(day.getUsersNeededOnLate() - 1);
+                    dayService.save(day);
+                }
             }
         }
         removeShift(userDayRelation);
