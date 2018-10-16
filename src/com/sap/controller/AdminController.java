@@ -317,11 +317,11 @@ public class AdminController {
 	
 	
 	@RequestMapping(value = "/editDay")
-    public String editDay (Day day, Model model){
+    public String editDay(Day day, Model model) {
 
         User currentUser = userService.getCurrentUser();
 
-        if (!userService.isTeamOwner(currentUser)){
+        if (!userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
@@ -329,8 +329,11 @@ public class AdminController {
         Day dayToBeSet = dayService.getDayByID(day.getId());
 
         dayToBeSet.setHoliday(day.isHoliday());
-
         dayToBeSet.setWeekend(day.isWeekend());
+
+        if (day.isWeekend() || day.isHoliday()){
+            userDayRelationService.removeShiftsOfHolidayOrWeekend(new ArrayList<>(dayToBeSet.getUserDayRelations()));
+        }
 
         dayService.save(dayToBeSet);
 
