@@ -28,4 +28,5 @@ public interface UserDayRelationService {
 	
 	void deleteUserDayRelationById (Integer id);
 
+    void deleteUserDayRelationsFromUser (List<UserDayRelation> userDayRelations);
 }
