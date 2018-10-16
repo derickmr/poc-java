@@ -72,10 +72,12 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
                     userDayRelation = new UserDayRelation();
                     userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
                     userDayRelation.setShift(Shift.NONE.getShift());
-                    if (Math.random() <= .5)
-                        day.setUsersNeededOnDay(day.getUsersNeededOnDay()+1);
-                    else
-                        day.setUsersNeededOnLate(day.getUsersNeededOnLate()+1);
+                    if (!day.isHoliday() && !day.isWeekend()) {
+                        if (Math.random() <= .5)
+                            day.setUsersNeededOnDay(day.getUsersNeededOnDay() + 1);
+                        else
+                            day.setUsersNeededOnLate(day.getUsersNeededOnLate() + 1);
+                    }
                     userDayRelation.setDay(day);
                     userDayRelation.setUser(user);
                     dayService.save(day);
