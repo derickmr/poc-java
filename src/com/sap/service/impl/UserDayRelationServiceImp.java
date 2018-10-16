@@ -176,17 +176,26 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
 	
 	private void changeShitsOfDays(UserDayRelation userDayRelationWithDefinedShift, UserDayRelation userDayRelationWithAnyShift) {
         Day day = userDayRelationWithAnyShift.getDay();
+        removeShift(userDayRelationWithAnyShift);
+        removeShift(userDayRelationWithDefinedShift);
 
-        if (userDayRelationWithAnyShift.getShift().equals(Shift.DAY.getShift())) {
-            setShift(userDayRelationWithAnyShift, Shift.LATE.getShift());
-            day.setUsersOnDay(day.getUsersOnDay() - 1);
-        } else {
-            setShift(userDayRelationWithAnyShift, Shift.DAY.getShift());
-            day.setUsersOnLate(day.getUsersOnLate() - 1);
-        }
-        if (!userDayRelationWithDefinedShift.getShift().equals(Shift.NONE.getShift()))
-            removeShift(userDayRelationWithDefinedShift);
         setShift(userDayRelationWithDefinedShift, userDayRelationWithDefinedShift.getDesiredOriginalShift());
+
+        if (userDayRelationWithDefinedShift.getShift().equals(Shift.DAY.getShift())) {
+            if (day.isWeekend() || day.isHoliday()) {
+                if (isThereSpaceOnShift(day, Shift.LATE.getShift())) {
+                    setShift(userDayRelationWithAnyShift, Shift.LATE.getShift());
+                }
+            } else
+                setShift(userDayRelationWithAnyShift, Shift.LATE.getShift());
+        } else {
+            if (day.isWeekend() || day.isHoliday()) {
+                if (isThereSpaceOnShift(day, Shift.DAY.getShift())) {
+                    setShift(userDayRelationWithAnyShift, Shift.DAY.getShift());
+                }
+            } else
+                setShift(userDayRelationWithAnyShift, Shift.DAY.getShift());
+        }
     }
 	
 	private void setShift(UserDayRelation userDayRelation, String shift) {
