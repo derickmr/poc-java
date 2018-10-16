@@ -215,6 +215,15 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         userDayRelationDao.deleteUserDayRelationById(id);
     }
 	
+	@Override
+    public void deleteUserDayRelationsFromUser(List<UserDayRelation> userDayRelations) {
+        for (UserDayRelation userDayRelation :
+                userDayRelations) {
+            removeShiftNecessityWhenUserIsDeleted(userDayRelation);
+            deleteUserDayRelationById(userDayRelation.getId());
+        }
+    }
+	
 	private void removeShiftNecessityWhenUserIsDeleted (UserDayRelation userDayRelation){
         Day day = userDayRelation.getDay();
         if (userDayRelation.getShift().equals(Shift.DAY.getShift())){
