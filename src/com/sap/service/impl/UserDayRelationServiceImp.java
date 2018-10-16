@@ -209,4 +209,9 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         return null;
 
     }
+	
+	@Override
+    public void deleteUserDayRelationById(Integer id) {
+        userDayRelationDao.deleteUserDayRelationById(id);
+    }
 }
