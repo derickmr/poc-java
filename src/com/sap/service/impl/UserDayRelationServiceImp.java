@@ -108,12 +108,16 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
 	
 	private void removeShift(UserDayRelation userDayRelation) {
         Day day = userDayRelation.getDay();
-        if (userDayRelation.getShift().equals(Shift.DAY.getShift()))
+        if (userDayRelation.getShift().equals(Shift.DAY.getShift())) {
+            userDayRelation.setShift(Shift.NONE.getShift());
+            save(userDayRelation);
             day.setUsersOnDay(day.getUsersOnDay() - 1);
-
-        else if (userDayRelation.getShift().equals(Shift.LATE.getShift()))
+        }
+        else if (userDayRelation.getShift().equals(Shift.LATE.getShift())) {
+            userDayRelation.setShift(Shift.NONE.getShift());
+            save(userDayRelation);
             day.setUsersOnLate(day.getUsersOnLate() - 1);
-
+        }
         dayService.save(day);
 
     }
