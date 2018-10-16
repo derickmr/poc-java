@@ -294,6 +294,7 @@ public class AdminController {
     public String editDay(Day day, Model model) {
 
         User currentUser = userService.getCurrentUser();
+		Integer numberOfUsersOnTeam = userService.getTeamMates(currentUser).size();
 
         if (!userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
@@ -301,6 +302,16 @@ public class AdminController {
         }
 
         Day dayToBeSet = dayService.getDayByID(day.getId());
+		
+		if (dayToBeSet.isWeekend() || dayToBeSet.isHoliday()){
+            if (!day.isWeekend() && !day.isHoliday()){
+                if (numberOfUsersOnTeam.compareTo(0) > 0)
+                    dayToBeSet.setUsersNeededOnDay(numberOfUsersOnTeam/2);
+                else
+                    dayToBeSet.setUsersNeededOnDay(0);
+                dayToBeSet.setUsersNeededOnLate(numberOfUsersOnTeam-dayToBeSet.getUsersNeededOnDay());
+            }
+        }
 
         dayToBeSet.setHoliday(day.isHoliday());
         dayToBeSet.setWeekend(day.isWeekend());
