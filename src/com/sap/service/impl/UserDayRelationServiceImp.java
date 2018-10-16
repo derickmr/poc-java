@@ -120,7 +120,7 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
     public void removeShiftsOfHolidayOrWeekend (List<UserDayRelation> userDayRelations){
         for (UserDayRelation userDayRelation :
                 userDayRelations) {
-			if (!userDayRelation.isCanWorkAtHolidayOrWeekend()) {
+			if (!userDayRelation.isCanWorkAtHolidayOrWeekend() && userDayRelation.getDay().isHoliday() && userDayRelation.getDay().isWeekend()) {
                 removeShift(userDayRelation);
                 userDayRelation.setDesiredOriginalShift(Shift.NONE.getShift());
                 userDayRelation.setShift(Shift.NONE.getShift());
