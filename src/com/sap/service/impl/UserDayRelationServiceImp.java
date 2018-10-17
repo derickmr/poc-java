@@ -106,7 +106,8 @@ public class UserDayRelationServiceImp implements UserDayRelationService {
         return true;
     }
 	
-	private void removeShift(UserDayRelation userDayRelation) {
+	@Override
+	public void removeShift(UserDayRelation userDayRelation) {
         Day day = userDayRelation.getDay();
         if (userDayRelation.getShift().equals(Shift.DAY.getShift())) {
             userDayRelation.setShift(Shift.NONE.getShift());
