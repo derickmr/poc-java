@@ -508,4 +508,12 @@ public class AdminController {
         userDayRelationFromDatabase.setCanWorkAtHolidayOrWeekend(userDayRelationOnlyWithShiftAndId.isCanWorkAtHolidayOrWeekend());
         return userDayRelationFromDatabase;
     }
+	
+	private boolean canUserWorkAtDay(UserDayRelation userDayRelation, Day day) {
+        if (!day.isHoliday() && !day.isWeekend())
+            return true;
+        else if (userDayRelation.isCanWorkAtHolidayOrWeekend())
+            return true;
+        return false;
+    }
 }
