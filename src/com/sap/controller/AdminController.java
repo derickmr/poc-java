@@ -446,5 +446,17 @@ public class AdminController {
         teamCalendar.setEndDate(endDate);
         return teamCalendar;
     }
+	
+	 private TeamCalendar setUsersNeededPerShiftAtCalendar(TeamCalendar teamCalendar, HttpServletRequest request) {
+        String usersNeededOnDay = request.getParameter("usersDay");
+        String usersNeededOnLate = request.getParameter("usersLate");
+
+        teamCalendar.setInitialUsersNeededOnDay(convertStringToValidInteger(usersNeededOnDay));
+        teamCalendar.setInitialUsersNeededOnLate(convertStringToValidInteger(usersNeededOnLate));
+
+        return teamCalendar;
+    }
+	
+	
 
 }
