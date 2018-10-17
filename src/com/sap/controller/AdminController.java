@@ -457,6 +457,18 @@ public class AdminController {
         return teamCalendar;
     }
 	
+	 private boolean verifyIfSumOfShiftsAreValid(Day day, Integer sumOfShifts, Integer totalNumberOfUsersOnTeam) {
+        int result = (totalNumberOfUsersOnTeam.compareTo(sumOfShifts));
+
+        if (result < 0)
+            return false;
+        if (!isNormalDay(day))
+            return true;
+        else if (result == 0)
+            return true;
+        return false;
+    }
+	
 	
 
 }
