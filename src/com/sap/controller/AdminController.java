@@ -254,38 +254,16 @@ public class AdminController {
 	@RequestMapping(value = "/editDayShift")
     public String editDayShift(Day day, HttpServletRequest request) {
 
-        Integer usersOnDay;
-        Integer usersOnLate;
-        String usersOnDayString = request.getParameter("usersDay");
-        String usersOnLateString = request.getParameter("usersLate");
         Day dayToBeEdited = dayService.getDayByID(day.getId());
+        Integer usersOnDay = convertStringToValidInteger(request.getParameter("usersDay"));
+        Integer usersOnLate = convertStringToValidInteger(request.getParameter("usersLate"));
         Integer totalNumberOfUsersNeededOnShiftsAtDay = dayToBeEdited.getUsersNeededOnDay() + dayToBeEdited.getUsersNeededOnLate();
 
-        if (usersOnDayString.equals(""))
-            usersOnDay = 0;
-        else
-            usersOnDay = Integer.parseInt(usersOnDayString);
-
-        if (usersOnLateString.equals(""))
-            usersOnLate = 0;
-        else
-            usersOnLate = Integer.parseInt(usersOnLateString);
-
-        if (dayToBeEdited.isHoliday() || dayToBeEdited.isWeekend()){
-            int result = (totalNumberOfUsersNeededOnShiftsAtDay.compareTo(usersOnDay + usersOnLate));
-            if (result >= 0){
-                dayToBeEdited.setUsersNeededOnDay(usersOnDay);
-                dayToBeEdited.setUsersNeededOnLate(usersOnLate);
-                dayService.save(dayToBeEdited);
-            }
-
-        }
-        else {
-            if (totalNumberOfUsersNeededOnShiftsAtDay.equals(usersOnDay + usersOnLate)) {
-                dayToBeEdited.setUsersNeededOnDay(usersOnDay);
-                dayToBeEdited.setUsersNeededOnLate(usersOnLate);
-                dayService.save(dayToBeEdited);
-            }
+        if (verifyIfSumOfShiftsAreValid(dayToBeEdited, usersOnDay + usersOnLate, totalNumberOfUsersNeededOnShiftsAtDay)) {
+            dayToBeEdited.setUsersNeededOnDay(usersOnDay);
+            dayToBeEdited.setUsersNeededOnLate(usersOnLate);
+            dayService.save(dayToBeEdited);
+            removeShiftsOfOverlyShiftedDays(new ArrayList<>(dayToBeEdited.getUserDayRelations()));
         }
         return "redirect:/calendars";
     }
