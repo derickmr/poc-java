@@ -23,3 +23,6 @@
 hs_err_pid*
 target/
 lib/
+.idea/
+.pom.xml
+pom.xml
