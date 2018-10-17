@@ -498,4 +498,7 @@ public class AdminController {
         return day;
     }
 
+	private Integer getNumberOfUsersOnTeam(Team team) {
+        return team.getUsers().size() - 1;
+    }
 }
