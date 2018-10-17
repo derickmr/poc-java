@@ -479,6 +479,12 @@ public class AdminController {
         return (!day.isWeekend() && !day.isHoliday());
     }
 	
+	private boolean isDayBeingSetFromHolidayOrWeekendToNormalDay(Day dayWithPreviousConfigurations, Day dayWithAfterConfigurations) {
+        if (!isNormalDay(dayWithPreviousConfigurations) && isNormalDay(dayWithAfterConfigurations))
+            return true;
+        return false;
+    }
+	
 	
 
 }
