@@ -475,6 +475,10 @@ public class AdminController {
         return Integer.parseInt(string);
     }
 	
+	private boolean isNormalDay(Day day) {
+        return (!day.isWeekend() && !day.isHoliday());
+    }
+	
 	
 
 }
