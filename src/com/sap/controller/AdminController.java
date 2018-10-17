@@ -331,22 +331,25 @@ public class AdminController {
     public String editDay(Day day, Model model) {
 
         User currentUser = userService.getCurrentUser();
+        Day dayFromDatabaseWhichWillBeEdited = dayService.getDayByID(day.getId());
 
         if (!userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
-
-        Day dayToBeSet = dayService.getDayByID(day.getId());
-
-        dayToBeSet.setHoliday(day.isHoliday());
-        dayToBeSet.setWeekend(day.isWeekend());
-
-        if (day.isWeekend() || day.isHoliday()){
-            userDayRelationService.removeShiftsOfHolidayOrWeekend(new ArrayList<>(dayToBeSet.getUserDayRelations()));
+        
+        if (isDayBeingSetFromHolidayOrWeekendToNormalDay(dayFromDatabaseWhichWillBeEdited, day)) {
+            dayFromDatabaseWhichWillBeEdited = setShiftsForDayWhichWasChangedFromHolidayToNormalDay(dayFromDatabaseWhichWillBeEdited);
         }
 
-        dayService.save(dayToBeSet);
+        dayFromDatabaseWhichWillBeEdited.setHoliday(day.isHoliday());
+        dayFromDatabaseWhichWillBeEdited.setWeekend(day.isWeekend());
+
+        if (!isNormalDay(day)) {
+            userDayRelationService.removeShiftsOfHolidayOrWeekend(new ArrayList<>(dayFromDatabaseWhichWillBeEdited.getUserDayRelations()));
+        }
+
+        dayService.save(dayFromDatabaseWhichWillBeEdited);
 
         return "redirect:/calendars";
 
