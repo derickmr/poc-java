@@ -516,4 +516,25 @@ public class AdminController {
             return true;
         return false;
     }
+	
+	private void removeShiftsOfOverlyShiftedDays(List<UserDayRelation> userDayRelations) {
+        Day day = userDayRelations.get(0).getDay();
+        int i = 0;
+
+        while (day.getUsersOnDay().compareTo(day.getUsersNeededOnDay()) > 0) {
+            UserDayRelation userDayRelation = userDayRelations.get(i);
+            if (userDayRelation.getShift().equals(Shift.DAY.getShift()))
+                userDayRelationService.removeShift(userDayRelation);
+            i++;
+        }
+
+        i = 0;
+
+        while (day.getUsersOnLate().compareTo(day.getUsersNeededOnLate()) > 0) {
+            UserDayRelation userDayRelation = userDayRelations.get(i);
+            if (userDayRelation.getShift().equals(Shift.LATE.getShift()))
+                userDayRelationService.removeShift(userDayRelation);
+            i++;
+        }
+    }
 }
