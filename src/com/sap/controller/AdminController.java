@@ -438,5 +438,13 @@ public class AdminController {
         }
         return "redirect:/calendars";
     }
+	
+	private TeamCalendar setDatesToCalendar(TeamCalendar teamCalendar, HttpServletRequest request) {
+        LocalDate startDate = LocalDate.parse(request.getParameter("start-date"));
+        LocalDate endDate = LocalDate.parse(request.getParameter("end-date"));
+        teamCalendar.setStartDate(startDate);
+        teamCalendar.setEndDate(endDate);
+        return teamCalendar;
+    }
 
 }
