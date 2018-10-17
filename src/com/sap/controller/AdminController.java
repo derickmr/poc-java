@@ -501,4 +501,11 @@ public class AdminController {
 	private Integer getNumberOfUsersOnTeam(Team team) {
         return team.getUsers().size() - 1;
     }
+	
+	private UserDayRelation setUserDayRelationShiftAndAvailability(UserDayRelation userDayRelationOnlyWithShiftAndId) {
+        UserDayRelation userDayRelationFromDatabase = userDayRelationService.getWorkDayById(userDayRelationOnlyWithShiftAndId.getId());
+        userDayRelationFromDatabase.setDesiredOriginalShift(userDayRelationOnlyWithShiftAndId.getShift());
+        userDayRelationFromDatabase.setCanWorkAtHolidayOrWeekend(userDayRelationOnlyWithShiftAndId.isCanWorkAtHolidayOrWeekend());
+        return userDayRelationFromDatabase;
+    }
 }
