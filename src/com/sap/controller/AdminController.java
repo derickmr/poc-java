@@ -469,6 +469,12 @@ public class AdminController {
         return false;
     }
 	
+	private Integer convertStringToValidInteger(String string) {
+        if (string.equals(""))
+            return 0;
+        return Integer.parseInt(string);
+    }
+	
 	
 
 }
