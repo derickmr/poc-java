@@ -485,6 +485,17 @@ public class AdminController {
         return false;
     }
 	
-	
+	private Day setShiftsForDayWhichWasChangedFromHolidayToNormalDay(Day day) {
+        Integer numberOfUsersOnTeam = getNumberOfUsersOnTeam(day.getTeamCalendar().getTeam());
+        if (day.getUsersNeededOnDay() > 0) {
+            day.setUsersNeededOnLate(numberOfUsersOnTeam - day.getUsersNeededOnDay());
+        } else if (day.getUsersNeededOnLate() > 0) {
+            day.setUsersNeededOnDay(numberOfUsersOnTeam - day.getUsersNeededOnLate());
+        } else {
+            day.setUsersNeededOnDay(numberOfUsersOnTeam / 2);
+            day.setUsersNeededOnLate(numberOfUsersOnTeam - day.getUsersNeededOnDay());
+        }
+        return day;
+    }
 
 }
