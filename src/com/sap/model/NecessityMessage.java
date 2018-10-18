@@ -109,6 +109,6 @@ public class NecessityMessage {
 
     @Override
     public String toString (){
-		return getMessage();
+        return "I need " + usersNeedToReachUsersDesired + " user(s) to set his shift to " + shift + " at " + date + "!";
     }
 }
