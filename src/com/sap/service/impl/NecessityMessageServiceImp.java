@@ -36,28 +36,26 @@ public class NecessityMessageServiceImp implements NecessityMessageService {
     }
 
     @Override
-    public List<NecessityMessage> deleteMessagesWhichWereAttended(List<NecessityMessage> necessityMessages) {
+    public void deleteMessagesWhichWereAttended(List<NecessityMessage> necessityMessages) {
 
-        List<NecessityMessage> necessityMessagesWhichWereNotDeleted = new ArrayList<>();
+        Day day = necessityMessages.get(0).getDay();
 
         for (NecessityMessage necessityMessage :
                 necessityMessages) {
-
-
             if (necessityMessage.getShift().equals(Shift.DAY.getShift())) {
-                if (necessityMessage.getDay().getUsersOnDay() > necessityMessage.getUsersOnShiftAtDate()) {
+                necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersDesiredOnShift() - day.getUsersOnDay());
+                save(necessityMessage);
+                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1)
                     deleteNecessityMessageById(necessityMessage.getId());
-                }
-                else
-                    necessityMessagesWhichWereNotDeleted.add(necessityMessage);
+                return;
+
             } else {
-                if (necessityMessage.getDay().getUsersOnLate() > necessityMessage.getUsersOnShiftAtDate()) {
+                necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersDesiredOnShift() - day.getUsersOnLate());
+                save(necessityMessage);
+                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1)
                     deleteNecessityMessageById(necessityMessage.getId());
-                }
-                else
-                    necessityMessagesWhichWereNotDeleted.add(necessityMessage);
+                return;
             }
         }
-        return necessityMessagesWhichWereNotDeleted;
     }
 }
