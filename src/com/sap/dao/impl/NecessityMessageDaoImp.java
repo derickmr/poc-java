@@ -16,7 +16,7 @@ public class NecessityMessageDaoImp extends HibernateDaoSupport implements Neces
     @Override
     @Transactional(readOnly = false)
     public void save(NecessityMessage message) {
-        getHibernateTemplate().save(message);
+        getHibernateTemplate().saveOrUpdate(message);
     }
 
     @Override
