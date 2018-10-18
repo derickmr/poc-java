@@ -481,8 +481,19 @@ public class AdminController {
 	private void removeShiftsOfOverlyShiftedDays(List<UserDayRelation> userDayRelations) {
         Day day = userDayRelations.get(0).getDay();
         int i = 0;
+        int size = userDayRelations.size();
 
-        while (day.getUsersOnDay().compareTo(day.getUsersNeededOnDay()) > 0) {
+        while (i < size && day.getUsersOnDay().compareTo(day.getUsersNeededOnDay()) > 0) {
+            UserDayRelation userDayRelation = userDayRelations.get(i);
+            if (userDayRelation.getShift().equals(Shift.DAY.getShift()) && (userDayRelation.getDesiredOriginalShift().equals(Shift.ANY.getShift()))) {
+                userDayRelationService.changeShift(userDayRelation, Shift.LATE.getShift());
+            }
+            i++;
+        }
+
+        i = 0;
+
+        while (i < size && day.getUsersOnDay().compareTo(day.getUsersNeededOnDay()) > 0) {
             UserDayRelation userDayRelation = userDayRelations.get(i);
             if (userDayRelation.getShift().equals(Shift.DAY.getShift()))
                 userDayRelationService.removeShift(userDayRelation);
@@ -491,11 +502,20 @@ public class AdminController {
 
         i = 0;
 
-        while (day.getUsersOnLate().compareTo(day.getUsersNeededOnLate()) > 0) {
+        while (i < size && day.getUsersOnLate().compareTo(day.getUsersNeededOnLate()) > 0) {
+            UserDayRelation userDayRelation = userDayRelations.get(i);
+            if (userDayRelation.getShift().equals(Shift.LATE.getShift()) && (userDayRelation.getDesiredOriginalShift().equals(Shift.ANY.getShift()))) {
+                userDayRelationService.changeShift(userDayRelation, Shift.DAY.getShift());
+            }
+            i++;
+        }
+
+        i = 0;
+
+        while (i < size && day.getUsersOnLate().compareTo(day.getUsersNeededOnLate()) > 0) {
             UserDayRelation userDayRelation = userDayRelations.get(i);
             if (userDayRelation.getShift().equals(Shift.LATE.getShift()))
                 userDayRelationService.removeShift(userDayRelation);
             i++;
         }
-    }
 }
