@@ -237,9 +237,9 @@ public class AdminController {
         Day dayToBeEdited = dayService.getDayByID(day.getId());
         Integer usersOnDay = convertStringToValidInteger(request.getParameter("usersDay"));
         Integer usersOnLate = convertStringToValidInteger(request.getParameter("usersLate"));
-        Integer totalNumberOfUsersNeededOnShiftsAtDay = dayToBeEdited.getUsersNeededOnDay() + dayToBeEdited.getUsersNeededOnLate();
+        Integer usersOnTeam = dayToBeEdited.getUserDayRelations().size() - 1;
 
-        if (verifyIfSumOfShiftsAreValid(dayToBeEdited, usersOnDay + usersOnLate, totalNumberOfUsersNeededOnShiftsAtDay)) {
+        if (verifyIfSumOfShiftsAreValid(dayToBeEdited, usersOnDay + usersOnLate, usersOnTeam)) {
             dayToBeEdited.setUsersNeededOnDay(usersOnDay);
             dayToBeEdited.setUsersNeededOnLate(usersOnLate);
             dayService.save(dayToBeEdited);
