@@ -339,6 +339,7 @@ public class AdminController {
         userDayRelationService.save(userDayRelationFromDatabase);
         userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
         return "redirect:/userPage";
+	}
 	
 	@RequestMapping(value = "/calendars")
     public String calendars (Model model){
@@ -510,4 +511,12 @@ public class AdminController {
                 userDayRelationService.removeShift(userDayRelation);
             i++;
         }
+	}
+	
+	private void updateExistentNecessityMessage (NecessityMessage necessityMessage){
+        necessityMessage.setUsersDesiredOnShift(necessityMessage.getUsersDesiredOnShift()+1);
+        necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersNeedToReachUsersDesired()+1);
+        necessityMessageService.save(necessityMessage);
+    }
+
 }
