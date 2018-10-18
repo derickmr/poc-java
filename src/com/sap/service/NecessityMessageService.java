@@ -14,6 +14,6 @@ public interface NecessityMessageService {
 
     void deleteNecessityMessageById (Integer id);
 
-    List<NecessityMessage> deleteMessagesWhichWereAttended (List<NecessityMessage> necessityMessages);
+    void deleteMessagesWhichWereAttended (List<NecessityMessage> necessityMessages);
 
 }
