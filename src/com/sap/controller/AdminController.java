@@ -313,33 +313,42 @@ public class AdminController {
 
     }
 	
-	 @RequestMapping(value = "/editWorkDay")
-    public String editWorkDay(Model model, UserDayRelation userDayRelation) {
+	 @RequestMapping(value = "/newShiftMessage")
+    public String createShiftMessage(HttpServletRequest request) {
+        LocalDate date = LocalDate.parse(request.getParameter("day-needed"));
+        User currentUser = userService.getCurrentUser();
+        List<TeamCalendar> teamCalendars = new ArrayList<>(currentUser.getTeam().getTeamCalendars());
+        Day day = teamCalendarService.getDayByDate(date, teamCalendars);
+        String shift = request.getParameter("shift");
+        List<NecessityMessage> necessityMessages = new ArrayList<>(day.getNecessityMessages());
 
-         User currentUser = userService.getCurrentUser();
-        List<UserDayRelation> userDayRelations = new ArrayList<>();
-        String shiftBeforeModifications;
-
-        if (userService.isTeamOwner(currentUser)) {
-            model.addAttribute("user", currentUser);
-            return "accessDenied";
-        }
-        UserDayRelation userDayRelationFromDatabase = userDayRelationService.getWorkDayById(userDayRelationOnlyWithShiftAndId.getId());
-        shiftBeforeModifications = userDayRelationFromDatabase.getShift();
-
-        userDayRelationFromDatabase = setUserDayRelationShiftAndAvailability(userDayRelationOnlyWithShiftAndId);
-        userDayRelations.add(userDayRelationFromDatabase);
-
-        if (canUserWorkAtDay(userDayRelationFromDatabase, userDayRelationFromDatabase.getDay())) {
-            userDayRelationService.changeShift(userDayRelationFromDatabase, userDayRelationFromDatabase.getDesiredOriginalShift());
-            if (!shiftBeforeModifications.equals(userDayRelationFromDatabase.getShift()))
-                necessityMessageService.deleteMessagesWhichWereAttended(new ArrayList<>(userDayRelationFromDatabase.getDay().getNecessityMessages()), userDayRelationFromDatabase.getShift());
+        for (NecessityMessage necessityMessage :
+                necessityMessages) {
+            if (necessityMessage.getShift().equals(shift)){
+                updateExistentNecessityMessage(necessityMessage);
+                return "redirect:/calendars";
+            }
         }
 
-        userDayRelationService.save(userDayRelationFromDatabase);
-        userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
-        return "redirect:/userPage";
-	}
+        if (teamCalendarService.verifyIfDateMakesPartOfCalendars(date, teamCalendars)) {
+            NecessityMessage shiftMessage = new NecessityMessage();
+            shiftMessage.setTeam(currentUser.getTeam());
+            shiftMessage.setShift(shift);
+            shiftMessage.setDate(date);
+            shiftMessage.setDay(day);
+            shiftMessage.setUsersNeedToReachUsersDesired(1);
+            if (request.getParameter("shift").equals(Shift.DAY.getShift())) {
+                shiftMessage.setUsersOnShiftAtDate(day.getUsersOnDay());
+            }
+            else {
+                shiftMessage.setUsersOnShiftAtDate(day.getUsersOnLate());
+            }
+            shiftMessage.setUsersDesiredOnShift(shiftMessage.getUsersOnShiftAtDate()+1);
+            shiftMessage.createMessageOfNecessity();
+            necessityMessageService.save(shiftMessage);
+        }
+        return "redirect:/calendars";
+    }
 	
 	@RequestMapping(value = "/calendars")
     public String calendars (Model model){
