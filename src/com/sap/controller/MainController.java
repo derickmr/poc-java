@@ -68,17 +68,14 @@ public class MainController {
     @RequestMapping(value = "/userPage")
     public String userPage (ModelMap model){
 
-        User user = userService.getCurrentUser();
-		List<UserDayRelation> userDayRelations = new ArrayList<>(currentUser.getUserDayRelations());
+       User currentUser = userService.getCurrentUser();
+        List<UserDayRelation> userDayRelations = new ArrayList<>(currentUser.getUserDayRelations());
         List<Message> normalMessages = teamService.getNormalMessages(currentUser.getTeam());
         List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
-        List<NecessityMessage> necessityMessages;
         List<UserDayRelation> userDayRelationsWithMessage = new ArrayList<>();
-		Collections.sort(userDayRelations, new UserDayRelationComparator());
+        Collections.sort(userDayRelations, new UserDayRelationComparator());
 
-		necessityMessages = necessityMessageService.deleteMessagesWhichWereAttended(shiftMessages);
-		
-		for (UserDayRelation userDayRelation :
+        for (UserDayRelation userDayRelation :
                 userDayRelations) {
             for (NecessityMessage necessityMessage :
                     shiftMessages) {
@@ -86,14 +83,19 @@ public class MainController {
                     userDayRelationsWithMessage.add(userDayRelation);
             }
         }
-		
-		model.addAttribute("user", currentUser);
+
+        Set<UserDayRelation> userDayRelationSet = new HashSet<>();
+        userDayRelationSet.addAll(userDayRelationsWithMessage);
+        userDayRelationsWithMessage.clear();
+        userDayRelationsWithMessage.addAll(userDayRelationSet);
+
+        model.addAttribute("user", currentUser);
         model.addAttribute("workDays", userDayRelations);
         model.addAttribute("normalMessages", normalMessages);
-        model.addAttribute("shiftMessages", necessityMessages);
+        model.addAttribute("shiftMessages", shiftMessages);
         model.addAttribute("userDayRelationsWithMessage", userDayRelationsWithMessage);
-
-        return "userPage";
+		
+		return "userPage";
 
     }
 

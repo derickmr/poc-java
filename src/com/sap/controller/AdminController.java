@@ -316,36 +316,29 @@ public class AdminController {
 	 @RequestMapping(value = "/editWorkDay")
     public String editWorkDay(Model model, UserDayRelation userDayRelation) {
 
-        User currentUser = userService.getCurrentUser();
+         User currentUser = userService.getCurrentUser();
+        List<UserDayRelation> userDayRelations = new ArrayList<>();
+        String shiftBeforeModifications;
 
         if (userService.isTeamOwner(currentUser)) {
             model.addAttribute("user", currentUser);
             return "accessDenied";
         }
+        UserDayRelation userDayRelationFromDatabase = userDayRelationService.getWorkDayById(userDayRelationOnlyWithShiftAndId.getId());
+        shiftBeforeModifications = userDayRelationFromDatabase.getShift();
 
-        UserDayRelation userDayRelationToBeSet = userDayRelationService.getWorkDayById(userDayRelation.getId());
-        userDayRelationToBeSet.setDesiredOriginalShift(userDayRelation.getShift());
-        userDayRelationToBeSet.setCanWorkAtHolidayOrWeekend(userDayRelation.isCanWorkAtHolidayOrWeekend());
+        userDayRelationFromDatabase = setUserDayRelationShiftAndAvailability(userDayRelationOnlyWithShiftAndId);
+        userDayRelations.add(userDayRelationFromDatabase);
 
-        if (userDayRelationToBeSet.getDay().isWeekend() || userDayRelationToBeSet.getDay().isHoliday()){
-            if (userDayRelationToBeSet.isCanWorkAtHolidayOrWeekend()){
-                if (userDayRelationToBeSet.getDesiredOriginalShift().equals(userDayRelationToBeSet.getShift())) {
-                    userDayRelationService.save(userDayRelationToBeSet);
-                } else
-                    userDayRelationService.changeShift(userDayRelationToBeSet, userDayRelationToBeSet.getDesiredOriginalShift());
-            }
+        if (canUserWorkAtDay(userDayRelationFromDatabase, userDayRelationFromDatabase.getDay())) {
+            userDayRelationService.changeShift(userDayRelationFromDatabase, userDayRelationFromDatabase.getDesiredOriginalShift());
+            if (!shiftBeforeModifications.equals(userDayRelationFromDatabase.getShift()))
+                necessityMessageService.deleteMessagesWhichWereAttended(new ArrayList<>(userDayRelationFromDatabase.getDay().getNecessityMessages()), userDayRelationFromDatabase.getShift());
         }
 
-        else {
-            if (userDayRelationToBeSet.getDesiredOriginalShift().equals(userDayRelationToBeSet.getShift())) {
-                userDayRelationService.save(userDayRelationToBeSet);
-            } else
-                userDayRelationService.changeShift(userDayRelationToBeSet, userDayRelationToBeSet.getDesiredOriginalShift());
-        }
-        userDayRelationService.save(userDayRelationToBeSet);
+        userDayRelationService.save(userDayRelationFromDatabase);
         userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
         return "redirect:/userPage";
-    }
 	
 	@RequestMapping(value = "/calendars")
     public String calendars (Model model){
@@ -354,11 +347,10 @@ public class AdminController {
 
         List<TeamCalendar> teamCalendars = new ArrayList<>(userService.getCurrentUser().getTeam().getTeamCalendars());
         List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
-        List<NecessityMessage> necessityMessages = necessityMessageService.deleteMessagesWhichWereAttended(shiftMessages);
         Collections.sort(teamCalendars, new TeamCalendarComparator());
 
         model.addAttribute("calendars", teamCalendars);
-        model.addAttribute("shiftMessages", necessityMessages);
+        model.addAttribute("shiftMessages", shiftMessages);
 
         return "calendars";
     }
