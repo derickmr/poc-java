@@ -69,6 +69,26 @@ public class NecessityMessage {
         return shift;
     }
 
+    private Integer usersDesiredOnShift;
+
+    private Integer usersNeedToReachUsersDesired;
+
+    public Integer getUsersDesiredOnShift() {
+        return usersDesiredOnShift;
+    }
+
+    public void setUsersDesiredOnShift(Integer usersDesiredOnShift) {
+        this.usersDesiredOnShift = usersDesiredOnShift;
+    }
+
+    public Integer getUsersNeedToReachUsersDesired() {
+        return usersNeedToReachUsersDesired;
+    }
+
+    public void setUsersNeedToReachUsersDesired(Integer usersNeedToReachUsersDesired) {
+        this.usersNeedToReachUsersDesired = usersNeedToReachUsersDesired;
+    }
+
     public void setShift(String shift) {
         this.shift = shift;
     }
@@ -89,6 +109,6 @@ public class NecessityMessage {
 
     @Override
     public String toString (){
-        return getMessage();
+		return getMessage();
     }
 }
