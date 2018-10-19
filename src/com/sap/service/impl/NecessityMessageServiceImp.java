@@ -38,6 +38,9 @@ public class NecessityMessageServiceImp implements NecessityMessageService {
     @Override
     public void deleteMessagesWhichWereAttended(List<NecessityMessage> necessityMessages) {
 
+        if (necessityMessages.isEmpty())
+            return;
+
         Day day = necessityMessages.get(0).getDay();
 
         for (NecessityMessage necessityMessage :
@@ -45,16 +48,17 @@ public class NecessityMessageServiceImp implements NecessityMessageService {
             if (necessityMessage.getShift().equals(Shift.DAY.getShift())) {
                 necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersDesiredOnShift() - day.getUsersOnDay());
                 save(necessityMessage);
-                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1)
+                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1) {
                     deleteNecessityMessageById(necessityMessage.getId());
-                return;
-
+                    return;
+                }
             } else {
                 necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersDesiredOnShift() - day.getUsersOnLate());
                 save(necessityMessage);
-                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1)
+                if (necessityMessage.getUsersNeedToReachUsersDesired() < 1) {
                     deleteNecessityMessageById(necessityMessage.getId());
-                return;
+                    return;
+                }
             }
         }
     }
