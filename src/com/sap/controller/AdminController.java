@@ -177,6 +177,78 @@ public class AdminController {
         return "workDayDetail";
     }
 	
+	@RequestMapping(value = "/setShiftFromHomePage/{id}")
+    public String setShiftFromHomePage (@PathVariable("id") Integer id, Model model, HttpServletRequest request){
+
+        User currentUser = userService.getCurrentUser();
+        List<UserDayRelation> userDayRelations = new ArrayList<>();
+        String shiftBeforeModifications;
+        String desiredShift = request.getParameter("shift");
+        String canWorkString = request.getParameter("canWork");
+        boolean canWork = true;
+
+        if (canWorkString == null)
+            canWork = false;
+
+        if (userService.isTeamOwner(currentUser)) {
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+        UserDayRelation userDayRelationFromDatabase = userDayRelationService.getWorkDayById(id);
+        shiftBeforeModifications = userDayRelationFromDatabase.getShift();
+
+        userDayRelationFromDatabase.setDesiredOriginalShift(desiredShift);
+        userDayRelationFromDatabase.setCanWorkAtHolidayOrWeekend(canWork);
+        userDayRelations.add(userDayRelationFromDatabase);
+
+        if (desiredShift.equals(shiftBeforeModifications)){
+            userDayRelationService.save(userDayRelationFromDatabase);
+            return "redirect:/userPage";
+        }
+
+        if (canUserWorkAtDay(userDayRelationFromDatabase, userDayRelationFromDatabase.getDay())) {
+            userDayRelationService.changeShift(userDayRelationFromDatabase, userDayRelationFromDatabase.getDesiredOriginalShift());
+            if (!shiftBeforeModifications.equals(userDayRelationFromDatabase.getShift()))
+                necessityMessageService.deleteMessagesWhichWereAttended(new ArrayList<>(userDayRelationFromDatabase.getDay().getNecessityMessages()));
+        }
+
+        userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
+
+        return "redirect:/userPage";
+    }
+
+    @RequestMapping(value = "/editWorkDay")
+    public String editWorkDay(Model model, UserDayRelation userDayRelationOnlyWithShiftAndId) {
+
+        User currentUser = userService.getCurrentUser();
+        List<UserDayRelation> userDayRelations = new ArrayList<>();
+        String shiftBeforeModifications;
+
+        if (userService.isTeamOwner(currentUser)) {
+            model.addAttribute("user", currentUser);
+            return "accessDenied";
+        }
+        UserDayRelation userDayRelationFromDatabase = userDayRelationService.getWorkDayById(userDayRelationOnlyWithShiftAndId.getId());
+        shiftBeforeModifications = userDayRelationFromDatabase.getShift();
+
+        userDayRelationFromDatabase = setUserDayRelationShiftAndAvailability(userDayRelationOnlyWithShiftAndId);
+        userDayRelations.add(userDayRelationFromDatabase);
+
+        if (userDayRelationOnlyWithShiftAndId.getShift().equals(shiftBeforeModifications)){
+            userDayRelationService.save(userDayRelationFromDatabase);
+            return "redirect:/userPage";
+        }
+
+        if (canUserWorkAtDay(userDayRelationFromDatabase, userDayRelationFromDatabase.getDay())) {
+            userDayRelationService.changeShift(userDayRelationFromDatabase, userDayRelationFromDatabase.getDesiredOriginalShift());
+            if (!shiftBeforeModifications.equals(userDayRelationFromDatabase.getShift()))
+                necessityMessageService.deleteMessagesWhichWereAttended(new ArrayList<>(userDayRelationFromDatabase.getDay().getNecessityMessages()));
+        }
+
+        userDayRelationService.removeShiftsOfHolidayOrWeekend(userDayRelations);
+        return "redirect:/userPage";
+    }
+	
 	@RequestMapping(value = "/newCalendar")
     public String saveCalendar(HttpServletRequest request, Model model) {
 
