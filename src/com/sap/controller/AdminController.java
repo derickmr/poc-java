@@ -320,16 +320,22 @@ public class AdminController {
         List<TeamCalendar> teamCalendars = new ArrayList<>(currentUser.getTeam().getTeamCalendars());
         Day day = teamCalendarService.getDayByDate(date, teamCalendars);
         String shift = request.getParameter("shift");
-        List<NecessityMessage> necessityMessages = new ArrayList<>(day.getNecessityMessages());
 
-        for (NecessityMessage necessityMessage :
-                necessityMessages) {
-            if (necessityMessage.getShift().equals(shift)){
-                updateExistentNecessityMessage(necessityMessage);
-                return "redirect:/calendars";
+        if (!teamCalendarService.verifyIfDateMakesPartOfCalendars(date, teamCalendars))
+            return "redirect:/calendars";
+
+        if (day.getNecessityMessages() != null && !day.getNecessityMessages().isEmpty()) {
+
+            List<NecessityMessage> necessityMessages = new ArrayList<>(day.getNecessityMessages());
+
+            for (NecessityMessage necessityMessage :
+                    necessityMessages) {
+                if (necessityMessage.getShift().equals(shift)) {
+                    updateExistentNecessityMessage(necessityMessage);
+                    return "redirect:/calendars";
+                }
             }
         }
-
         if (teamCalendarService.verifyIfDateMakesPartOfCalendars(date, teamCalendars)) {
             NecessityMessage shiftMessage = new NecessityMessage();
             shiftMessage.setTeam(currentUser.getTeam());
