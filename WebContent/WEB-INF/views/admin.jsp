@@ -65,7 +65,7 @@
                 </form:label>
             </td>
             <td>
-                <form:input path="ssoId" placeholder="Single Sign On ID"/>
+                <form:input path="ssoId" placeholder="Single Sign On ID" required="true"/>
             </td>
         </tr>
         <tr>
@@ -75,7 +75,7 @@
                 </form:label>
             </td>
             <td>
-                <form:input type="password" path="password" placeholder="Password"/>
+                <form:input type="password" path="password" placeholder="Password" required="true"/>
             </td>
         </tr>
         <tr>
