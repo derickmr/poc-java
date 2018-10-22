@@ -1,49 +1,49 @@
 package com.sap.service.impl;
 
-import com.sap.dao.NecessityMessageDao;
-import com.sap.model.NecessityMessage;
+import com.sap.dao.UserOnShiftNotificationDao;
+import com.sap.model.Day;
 import com.sap.model.Shift;
-import com.sap.service.NecessityMessageService;
+import com.sap.model.UserOnShiftNotification;
+import com.sap.service.UserOnShiftNotificationService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class NecessityMessageServiceImp implements NecessityMessageService {
+public class UserOnShiftNotificationServiceImp implements UserOnShiftNotificationService {
 
     @Resource
-    private NecessityMessageDao necessityMessageDao;
+    private UserOnShiftNotificationDao userOnShiftNotificationDao;
 
     @Override
-    public void save(NecessityMessage message) {
-        necessityMessageDao.save(message);
+    public void save(UserOnShiftNotification message) {
+        userOnShiftNotificationDao.save(message);
     }
 
     @Override
-    public NecessityMessage getNecessityMessageById(Integer id) {
-        return necessityMessageDao.getNecessityMessageById(id);
+    public UserOnShiftNotification getNecessityMessageById(Integer id) {
+        return userOnShiftNotificationDao.getNecessityMessageById(id);
     }
 
     @Override
-    public List<NecessityMessage> getAllNecessityMessages() {
-        return new ArrayList<>(necessityMessageDao.getAllNecessityMessages());
+    public List<UserOnShiftNotification> getAllNecessityMessages() {
+        return new ArrayList<>(userOnShiftNotificationDao.getAllNecessityMessages());
     }
 
     @Override
     public void deleteNecessityMessageById(Integer id) {
-        necessityMessageDao.deleteNecessityMessageById(id);
+        userOnShiftNotificationDao.deleteNecessityMessageById(id);
     }
 
     @Override
-    public void deleteMessagesWhichWereAttended(List<NecessityMessage> necessityMessages) {
+    public void deleteMessagesWhichWereAttended(List<UserOnShiftNotification> necessityMessages) {
 
         if (necessityMessages.isEmpty())
             return;
 
         Day day = necessityMessages.get(0).getDay();
 
-        for (NecessityMessage necessityMessage :
+        for (UserOnShiftNotification necessityMessage :
                 necessityMessages) {
             if (necessityMessage.getShift().equals(Shift.DAY.getShift())) {
                 necessityMessage.setUsersNeedToReachUsersDesired(necessityMessage.getUsersDesiredOnShift() - day.getUsersOnDay());

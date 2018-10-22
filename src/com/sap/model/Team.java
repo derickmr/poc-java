@@ -23,31 +23,30 @@ public class Team {
     @OneToMany(mappedBy = "team", targetEntity = User.class, fetch = FetchType.EAGER)
     private List<User> users;
 
-    @OneToOne
-    private User teamOwner;
-	
-	@OneToMany(mappedBy = "team", targetEntity = Message.class, fetch = FetchType.EAGER)
-    private Set<Message> messages;
+    @OneToMany(mappedBy = "team", targetEntity = TeamMessage.class, fetch = FetchType.EAGER)
+    private Set<TeamMessage> messages;
 
-    @OneToMany(mappedBy = "team", targetEntity = NecessityMessage.class, fetch = FetchType.EAGER)
-    private Set<NecessityMessage> shiftMessages;
+    @OneToMany(mappedBy = "team", targetEntity = UserOnShiftNotification.class, fetch = FetchType.EAGER)
+    private Set<UserOnShiftNotification> shiftMessages;
 
-    public Set<NecessityMessage> getShiftMessages() {
+    public Set<UserOnShiftNotification> getShiftMessages() {
         return shiftMessages;
     }
 
-    public void setShiftMessages(Set<NecessityMessage> shiftMessages) {
+    public void setShiftMessages(Set<UserOnShiftNotification> shiftMessages) {
         this.shiftMessages = shiftMessages;
     }
 
-    public Set<Message> getMessages() {
+    public Set<TeamMessage> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(Set<TeamMessage> messages) {
         this.messages = messages;
     }
 
+    @OneToOne
+    private User teamOwner;
 
     @OneToMany(mappedBy = "team", targetEntity = TeamCalendar.class, fetch = FetchType.EAGER)
     private Set<TeamCalendar> teamCalendars;
@@ -116,4 +115,3 @@ public class Team {
     }
 
 }
-//

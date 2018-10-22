@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "DAY")
-public class Day {
+public class Day implements Comparable<Day> {
 
     @Id
     @Column(name = "DAY_ID")
@@ -18,23 +18,9 @@ public class Day {
     @Column(name = "DATE_OF_DAY")
     private LocalDate date;
 
-	@OneToMany(mappedBy = "day", targetEntity = NecessityMessage.class, fetch = FetchType.EAGER)
-    private Set<NecessityMessage> necessityMessages;
-	
-	private Integer usersNeededOnLate;
-    private Integer usersNeededOnDay;
+    @OneToMany(mappedBy = "day", targetEntity = UserOnShiftNotification.class, fetch = FetchType.EAGER)
+    private Set<UserOnShiftNotification> necessityMessages;
 
-    private Integer usersOnLate;
-    private Integer usersOnDay;
-	
-	public Set<NecessityMessage> getNecessityMessages() {
-        return necessityMessages;
-    }
-
-    public void setNecessityMessages(Set<NecessityMessage> necessityMessages) {
-        this.necessityMessages = necessityMessages;
-    }
-	
     public LocalDate getDate() {
         return date;
     }
@@ -62,6 +48,52 @@ public class Day {
     }
 
     private boolean weekend;
+
+    private Integer usersNeededOnLate;
+    private Integer usersNeededOnDay;
+
+    private Integer usersOnLate;
+    private Integer usersOnDay;
+
+    public Integer getUsersNeededOnLate() {
+        return usersNeededOnLate;
+    }
+
+    public void setUsersNeededOnLate(Integer usersNeededOnLate) {
+        this.usersNeededOnLate = usersNeededOnLate;
+    }
+
+    public Integer getUsersNeededOnDay() {
+        return usersNeededOnDay;
+    }
+
+    public void setUsersNeededOnDay(Integer usersNeededOnDay) {
+        this.usersNeededOnDay = usersNeededOnDay;
+    }
+
+    public Integer getUsersOnLate() {
+        return usersOnLate;
+    }
+
+    public void setUsersOnLate(Integer usersOnLate) {
+        this.usersOnLate = usersOnLate;
+    }
+
+    public Integer getUsersOnDay() {
+        return usersOnDay;
+    }
+
+    public void setUsersOnDay(Integer usersOnDay) {
+        this.usersOnDay = usersOnDay;
+    }
+
+    public Set<UserOnShiftNotification> getNecessityMessages() {
+        return necessityMessages;
+    }
+
+    public void setNecessityMessages(Set<UserOnShiftNotification> necessityMessages) {
+        this.necessityMessages = necessityMessages;
+    }
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "DAY_TEAM_CALENDAR")
@@ -93,37 +125,7 @@ public class Day {
     public void setUserDayRelations(Set<UserDayRelation> userDayRelations) {
         this.userDayRelations = userDayRelations;
     }
-public Integer getUsersNeededOnLate() {
-        return usersNeededOnLate;
-    }
 
-    public void setUsersNeededOnLate(Integer usersNeededOnLate) {
-        this.usersNeededOnLate = usersNeededOnLate;
-    }
-
-    public Integer getUsersNeededOnDay() {
-        return usersNeededOnDay;
-    }
-
-    public void setUsersNeededOnDay(Integer usersNeededOnDay) {
-        this.usersNeededOnDay = usersNeededOnDay;
-    }
-
-    public Integer getUsersOnLate() {
-        return usersOnLate;
-    }
-
-    public void setUsersOnLate(Integer usersOnLate) {
-        this.usersOnLate = usersOnLate;
-    }
-
-    public Integer getUsersOnDay() {
-        return usersOnDay;
-    }
-
-    public void setUsersOnDay(Integer usersOnDay) {
-        this.usersOnDay = usersOnDay;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,5 +138,14 @@ public Integer getUsersNeededOnLate() {
     @Override
     public int hashCode() {
         return Objects.hash(id, date);
+    }
+
+    @Override
+    public int compareTo(Day o) {
+        if (date.isBefore(o.getDate()))
+            return 1;
+        else if (date.isAfter(o.getDate()))
+            return -1;
+        return 0;
     }
 }

@@ -17,31 +17,24 @@
 
     </bean>
 
-    <bean name="teamDao" class="com.sap.dao.impl.TeamDaoImp">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean name="teamService" class="com.sap.service.impl.TeamServiceImp">
-
-    </bean>
-	
-	<bean name="userDayRelationDao" class="com.sap.dao.impl.UserDayRelationDaoImp">
+    <bean name="userDayRelationDao" class="com.sap.dao.impl.UserDayRelationDaoImp">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean name="userDayRelationService" class="com.sap.service.impl.UserDayRelationServiceImp">
 
     </bean>
 
-    <bean name="messageDao" class="com.sap.dao.impl.MessageDaoImp">
+    <bean name="teamMessageDao" class="com.sap.dao.impl.TeamMessageDaoImp">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean name="messageService" class="com.sap.service.impl.MessageServiceImp">
+    <bean name="teamMessageService" class="com.sap.service.impl.TeamMessageServiceImp">
 
     </bean>
 
-<bean name="necessityMessageDao" class="com.sap.dao.impl.NecessityMessageDaoImp">
+<bean name="userOnShiftNotificationDao" class="com.sap.dao.impl.UserOnShiftNotificationDaoImp">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean name="necessityMessageService" class="com.sap.service.impl.NecessityMessageServiceImp">
+    <bean name="userOnShiftNotificationService" class="com.sap.service.impl.UserOnShiftNotificationServiceImp">
 
     </bean>
 
@@ -59,6 +52,12 @@
 
     </bean>
 
+    <bean name="teamDao" class="com.sap.dao.impl.TeamDaoImp">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean name="teamService" class="com.sap.service.impl.TeamServiceImp">
+
+    </bean>
 
     <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>

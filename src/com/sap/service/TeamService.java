@@ -1,6 +1,10 @@
 package com.sap.service;
 
 import com.sap.model.Team;
+import com.sap.model.TeamMessage;
+import com.sap.model.UserOnShiftNotification;
+
+import java.util.List;
 
 public interface TeamService {
 
@@ -9,10 +13,9 @@ public interface TeamService {
     Team getTeamByID(Integer id);
 
     Team getTeamByName (String name);
-	
-	List<Message> getNormalMessages(Team team);
 
-    List<NecessityMessage> getNecessityMessages(Team team);
+    List<TeamMessage> getNormalMessages(Team team);
 
+    List<UserOnShiftNotification> getNecessityMessages(Team team);
 
 }

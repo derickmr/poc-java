@@ -3,14 +3,12 @@ package com.sap.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER_DAY_RELATION")   //change entity name
+@Table(name = "USER_DAY_RELATION")
 public class UserDayRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
-
-	private String desiredOriginalShift;
 
     public Integer getId() {
         return id;
@@ -20,14 +18,6 @@ public class UserDayRelation {
         this.id = id;
     }
 
-	public String getDesiredOriginalShift() {
-        return desiredOriginalShift;
-    }
-
-    public void setDesiredOriginalShift(String desiredOriginalShift) {
-        this.desiredOriginalShift = desiredOriginalShift;
-    }
-	
     public Day getDay() {
         return day;
     }
@@ -44,7 +34,16 @@ public class UserDayRelation {
     @JoinColumn(name = "DAY_OF_MONTH_WORK_DAY")
     private Day day;
 
+    private String desiredOriginalShift;
     private String shift;
+
+    public String getDesiredOriginalShift() {
+        return desiredOriginalShift;
+    }
+
+    public void setDesiredOriginalShift(String desiredOriginalShift) {
+        this.desiredOriginalShift = desiredOriginalShift;
+    }
 
     private boolean canWorkAtHolidayOrWeekend;
 

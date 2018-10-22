@@ -2,11 +2,15 @@ package com.sap.service.impl;
 
 import com.sap.dao.TeamDao;
 import com.sap.model.Team;
+import com.sap.model.TeamMessage;
+import com.sap.model.UserOnShiftNotification;
 import com.sap.service.TeamService;
 import com.sap.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TeamServiceImp implements TeamService {
@@ -28,16 +32,16 @@ public class TeamServiceImp implements TeamService {
     public Team getTeamByName (String name){
         return teamDao.getTeamByName(name);
     }
-	
-	@Override
-    public List<Message> getNormalMessages(Team team) {
-        List<Message> messages = new ArrayList<>(team.getMessages());
+
+    @Override
+    public List<TeamMessage> getNormalMessages(Team team) {
+        List<TeamMessage> messages = new ArrayList<>(team.getMessages());
         return messages;
     }
 
     @Override
-    public List<NecessityMessage> getNecessityMessages(Team team) {
-        List<NecessityMessage> messages = new ArrayList<>(team.getShiftMessages());
+    public List<UserOnShiftNotification> getNecessityMessages(Team team) {
+        List<UserOnShiftNotification> messages = new ArrayList<>(team.getShiftMessages());
         return messages;
     }
 }

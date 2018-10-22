@@ -1,22 +1,23 @@
 package com.sap.controller;
 
-import com.sap.model.Team;
-import com.sap.model.User;
-import com.sap.model.UserType;
+import com.sap.model.*;
 import com.sap.service.TeamService;
+import com.sap.service.UserOnShiftNotificationService;
 import com.sap.service.UserService;
+import com.sap.service.impl.UserDayRelationComparator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.Collections;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -26,11 +27,11 @@ public class MainController {
 
     @Resource
     TeamService teamService;
-	
-	@Resource
-    NecessityMessageService necessityMessageService;
 
-    @RequestMapping(value = {"/", "/home" }, method = RequestMethod.GET)
+    @Resource
+    UserOnShiftNotificationService userOnShiftNotificationService;
+
+    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String homePage(ModelMap model) {
 
         model.addAttribute("greeting", "Hi, welcome to my site");
@@ -39,45 +40,40 @@ public class MainController {
 
     }
 
-   
-
-
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
-    public String accessDeniedPage (ModelMap model){
+    public String accessDeniedPage(ModelMap model) {
         model.addAttribute("user", userService.getCurrentUser());
         return "accessDenied";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response){
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/login?logout";
     }
 
-
-
     @RequestMapping(value = "/userPage")
-    public String userPage (ModelMap model){
+    public String userPage(ModelMap model) {
 
-       User currentUser = userService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         List<UserDayRelation> userDayRelations = new ArrayList<>(currentUser.getUserDayRelations());
-        List<Message> normalMessages = teamService.getNormalMessages(currentUser.getTeam());
-        List<NecessityMessage> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
+        List<TeamMessage> normalMessages = teamService.getNormalMessages(currentUser.getTeam());
+        List<UserOnShiftNotification> shiftMessages = teamService.getNecessityMessages(currentUser.getTeam());
         List<UserDayRelation> userDayRelationsWithMessage = new ArrayList<>();
         Collections.sort(userDayRelations, new UserDayRelationComparator());
 
         for (UserDayRelation userDayRelation :
                 userDayRelations) {
-            for (NecessityMessage necessityMessage :
+            for (UserOnShiftNotification necessityMessage :
                     shiftMessages) {
                 if (userDayRelation.getDay().getDate().isEqual(necessityMessage.getDate()))
                     userDayRelationsWithMessage.add(userDayRelation);
@@ -94,23 +90,22 @@ public class MainController {
         model.addAttribute("normalMessages", normalMessages);
         model.addAttribute("shiftMessages", shiftMessages);
         model.addAttribute("userDayRelationsWithMessage", userDayRelationsWithMessage);
-		
-		return "userPage";
+
+        return "userPage";
 
     }
 
-
     @RequestMapping(value = "/newAdmin", method = RequestMethod.GET)
-    public String newAdminRegistration (ModelMap model){
-        User user = new User ();
+    public String newAdminRegistration(ModelMap model) {
+        User user = new User();
         model.addAttribute("user", user);
         return "newadmin";
     }
 
     @RequestMapping(value = "/newAdmin", method = RequestMethod.POST)
-    public String saveAdminRegistration (User user, ModelMap model){
+    public String saveAdminRegistration(User user, ModelMap model) {
 
-        if (userService.getUserBySsoId(user.getSsoId())!=null) {
+        if (userService.getUserBySsoId(user.getSsoId()) != null) {
             model.addAttribute("goBack", "/newAdmin");
             return "userAlreadyExists";
         }
@@ -122,7 +117,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/showAll")
-    public String showAll (ModelMap model){
+    public String showAll(ModelMap model) {
 
         User userAdmin = userService.getCurrentUser();
 
@@ -132,4 +127,5 @@ public class MainController {
 
         return "showAll";
     }
+
 }

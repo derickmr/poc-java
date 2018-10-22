@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "SHIFT_MESSAGE")
-public class NecessityMessage {
+public class UserOnShiftNotification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -109,6 +109,6 @@ public class NecessityMessage {
 
     @Override
     public String toString (){
-        return "I need " + usersNeedToReachUsersDesired + " user(s) to set his shift to " + shift + " at " + date + "!";
+        return "I need " + usersNeedToReachUsersDesired + " user(s) to set his shift to " + shift + " on " + date + "!";
     }
 }
