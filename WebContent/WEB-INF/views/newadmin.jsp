@@ -29,7 +29,7 @@
         <div class="form-group col-md-12">
             <label class="col-md-3 control-lable" for="ssoId">SSO ID</label>
             <div class="col-md-7">
-                <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm" placeholder="Single Sign on ID"/>
+                <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm" placeholder="Single Sign on ID" required="true"/>
                 <div class="has-error">
                     <form:errors path="ssoId" class="help-inline"/>
                 </div>
@@ -41,7 +41,7 @@
         <div class="form-group col-md-12">
             <label class="col-md-3 control-lable" for="password">Password</label>
             <div class="col-md-7">
-                <form:input type="password" path="password" id="password" class="form-control input-sm" placeholder="Password"/>
+                <form:input type="password" path="password" id="password" class="form-control input-sm" placeholder="Password" required="true"/>
                 <div class="has-error">
                     <form:errors path="password" class="help-inline"/>
                 </div>
